@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ibadullah Khalid — Portfolio</title>
+  <meta name="description" content="Team Lead Software Engineer & Indie Game Developer. Unity/C#, C++, gameplay systems, tools, and embedded simulations." />
+  <meta property="og:title" content="Ibadullah Khalid — Portfolio" />
+  <meta property="og:description" content="Team Lead Software Engineer & Indie Game Developer. Unity/C#, C++, gameplay systems, tools, and embedded simulations." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#0f172a; --muted:#9aa4b2; --text:#e6edf3; --accent:#7dd3fc; --accent-2:#a78bfa; --ring:#60a5fa; --card:#111827;
+      --chip:#111827; --chip-text:#cbd5e1; --border:#1f2937; --link:#93c5fd; --success:#34d399; --warning:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,#0b1020 0%,#0b1020 40%,#111827 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;backdrop-filter:blur(8px);background:rgba(11,16,32,.6);border-bottom:1px solid var(--border);z-index:20}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .nav-links a{margin-left:18px;font-weight:600;opacity:.9}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg,#0f172a,#0b1020);color:var(--text);box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:600}
+    .btn:hover{transform:translateY(-1px);transition:.15s ease}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:48px 0}
+    .hero h1{font-size:44px;line-height:1.05;margin:0 0 14px}
+    .hero p{color:var(--muted);font-size:18px;max-width:64ch}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0));border:1px solid var(--border);border-radius:20px;padding:22px}
+    .grid{display:grid;gap:18px}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid-3,.grid-2{grid-template-columns:1fr}}
+    .section{padding:18px 0 8px}
+    .section h2{margin:8px 0 14px;font-size:28px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--border);color:var(--chip-text);font-size:13px}
+    .stack{display:flex;flex-wrap:wrap;gap:8px}
+    .project h3{margin:8px 0 6px}
+    .project p{color:var(--muted);margin:0 0 10px}
+    .subtle{color:var(--muted)}
+    .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:flex-start}
+    footer{padding:50px 0;color:var(--muted);text-align:center}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);margin:22px 0}
+    .avatar{width:84px;height:84px;border-radius:20px;background:#111827;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800}
+    .tagline{font-weight:600;letter-spacing:.2px;color:#d1fae5;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;display:inline-flex;gap:8px;align-items:center}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px;color:#9ca3af}
+    .timeline{border-left:2px dashed #334155;margin-left:10px;padding-left:16px}
+    .timeline .row{margin:0 0 14px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="avatar">IK</div>
+          <div>
+            <strong>Ibadullah Khalid</strong><br/>
+            <span class="mono">Team Lead • Indie Game Dev</span>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#projects">Projects</a>
+          <a href="#experience">Experience</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+          <a class="btn" href="Ibadullah-Khalid-CV.pdf">Download CV</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="tagline">Building teams & worlds</span>
+        <h1>Lead Programmer • Gameplay & Systems • Unity/C# & C++</h1>
+        <p>
+          I design and ship real‑time systems—from <strong>gameplay mechanics and tools</strong> in Unity to
+          <strong>embedded simulations</strong> with ESP32 and C++. I've built a software team from scratch at
+          <strong>Sabro Technologies</strong>, led architecture and processes, and shipped a stack of production tools.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:16px">
+          <a class="btn" href="#projects">View Projects</a>
+          <a class="btn" href="https://github.com/Ebad018" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="grid grid-2">
+          <div>
+            <div class="subtle">Primary</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">Unity (2D/3D)</span>
+              <span class="chip">C#</span>
+              <span class="chip">C++</span>
+              <span class="chip">.NET</span>
+              <span class="chip">Shader Graph</span>
+            </div>
+          </div>
+          <div>
+            <div class="subtle">Systems</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">AI / NavMesh</span>
+              <span class="chip">State Machines</span>
+              <span class="chip">Networking (MQTT/WebSocket)</span>
+              <span class="chip">Tools & Pipelines</span>
+            </div>
+          </div>
+          <div>
+            <div class="subtle">Embedded</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">ESP32</span>
+              <span class="chip">Modbus RTU</span>
+              <span class="chip">ESP‑NOW</span>
+            </div>
+          </div>
+          <div>
+            <div class="subtle">Leadership</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">Team Building</span>
+              <span class="chip">Hiring & Mentoring</span>
+              <span class="chip">Agile</span>
+              <span class="chip">Code Review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="projects" class="section">
+      <h2>Selected Projects</h2>
+      <div class="grid grid-3">
+        <article class="card project">
+          <div class="subtle mono">Unity • WIP</div>
+          <h3>Hands of the End</h3>
+          <p>First‑person spellcasting with a <strong>gesture/hand‑sign</strong> system, AI enemies, and a retro pixel aesthetic.
+            Built mechanics, shader look, and UI solo.</p>
+          <div class="stack">
+            <span class="chip">Gesture System</span>
+            <span class="chip">AI</span>
+            <span class="chip">Shader Graph</span>
+          </div>
+        </article>
+        <article class="card project">
+          <div class="subtle mono">Unity • WIP</div>
+          <h3>Dead Extraction</h3>
+          <p>Wave‑based survival/extraction shooter. <strong>NavMesh AI</strong>, status effects (bleeding, infection),
+            inventory/loot and FPS animation integration.</p>
+          <div class="stack">
+            <span class="chip">AI / NavMesh</span>
+            <span class="chip">Systems</span>
+            <span class="chip">FPS Animations</span>
+          </div>
+        </article>
+        <article class="card project">
+          <div class="subtle mono">Unity • Prototype</div>
+          <h3>Red Bread Repossession</h3>
+          <p>Local split‑screen QTE duel parody. Randomized prompts, timing logic, and comedic feedback for party play.</p>
+          <div class="stack">
+            <span class="chip">QTE System</span>
+            <span class="chip">Split‑Screen</span>
+            <span class="chip">UI</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <h2>Experience</h2>
+      <div class="card">
+        <div class="timeline">
+          <div class="row">
+            <strong>Team Lead Software Engineer — Sabro Technologies</strong> · <span class="subtle">Mar 2023 – Present</span>
+            <ul>
+              <li>Built Sabro’s software team from <strong>zero to 10+</strong> engineers; led hiring, mentoring, and reviews.</li>
+              <li>Architected real‑time tools in C#/.NET (WPF/WinForms), WebSocket & MQTT streaming, automated PDF/Excel exports.</li>
+              <li>Created overlay performance monitors and internal auto‑updaters; established code standards and agile rituals.</li>
+            </ul>
+          </div>
+          <div class="row">
+            <strong>Junior Software Engineer — Sabro Technologies</strong> · <span class="subtle">Jan 2020 – Feb 2022</span>
+            <ul>
+              <li>Programmed ESP32 firmware in <strong>C++</strong> for real‑time control of compressors and sensors.</li>
+              <li>Developed Modbus RTU tools; implemented ESP‑NOW/MQTT/WebSocket networking for IoT devices.</li>
+              <li>Mentored junior developers across embedded and app projects.</li>
+            </ul>
+          </div>
+          <div class="row">
+            <strong>Technical Customer Support Executive — MFL</strong> · <span class="subtle">2021 – 2022</span>
+            <ul>
+              <li>Delivered technical support, optimized CRM workflows, and trained new hires.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <div class="card">
+        <div class="grid grid-3">
+          <div>
+            <div class="subtle">Programming</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">C#</span>
+              <span class="chip">C++</span>
+              <span class="chip">TypeScript</span>
+              <span class="chip">Dart</span>
+            </div>
+          </div>
+          <div>
+            <div class="subtle">Engines & Frameworks</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">Unity</span>
+              <span class="chip">.NET</span>
+              <span class="chip">Blazor</span>
+              <span class="chip">Flutter</span>
+            </div>
+          </div>
+          <div>
+            <div class="subtle">Systems & Tools</div>
+            <div class="stack" style="margin-top:8px">
+              <span class="chip">AI / NavMesh</span>
+              <span class="chip">State Machines</span>
+              <span class="chip">Shader Graph</span>
+              <span class="chip">Pipelines & CI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="card kv">
+        <div class="subtle">Email</div><div><a href="mailto:ibadullah.k81@gmail.com">ibadullah.k81@gmail.com</a></div>
+        <div class="subtle">GitHub</div><div><a href="https://github.com/Ebad018" target="_blank" rel="noreferrer">github.com/Ebad018</a></div>
+        <div class="subtle">Itch.io</div><div><a href="#" target="_blank" rel="noreferrer">(add your itch.io link)</a></div>
+        <div class="subtle">LinkedIn</div><div><a href="#" target="_blank" rel="noreferrer">(optional)</a></div>
+        <div class="subtle">Location</div><div>Islamabad, Pakistan (Remote‑ready)</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="divider"></div>
+      <div>© <span id="y"></span> Ibadullah Khalid — Built with ♥ and vanilla HTML/CSS</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

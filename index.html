@@ -51,6 +51,20 @@
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px;color:#9ca3af}
     .timeline{border-left:2px dashed #334155;margin-left:10px;padding-left:16px}
     .timeline .row{margin:0 0 14px}
+  /* Gamification styles */
+  #player-panel{display:flex;align-items:center;gap:12px}
+  .player-level{font-weight:700;font-size:13px}
+  .xp-bar{width:140px;height:10px;background:#07101a;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+  .xp-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s ease}
+  .ach-btn{padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--chip-text);font-size:13px;cursor:pointer}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;background:#071018;border:1px solid var(--border);font-size:12px;color:var(--chip-text)}
+  .ach-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.6);z-index:60}
+  .ach-modal.open{display:flex}
+  .ach-panel{background:var(--panel);border:1px solid var(--border);padding:18px;border-radius:12px;max-width:520px;width:92%;color:var(--text)}
+  .ach-list{display:grid;gap:8px;margin-top:12px}
+  .ach-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.01),transparent);border:1px solid rgba(255,255,255,.02)}
+  .toast{position:fixed;right:18px;bottom:18px;background:#0f172a;border:1px solid var(--border);padding:10px 14px;border-radius:10px;color:var(--text);box-shadow:0 8px 30px rgba(2,6,23,.6);display:none;z-index:70}
+  .toast.show{display:block}
   </style>
 </head>
 <body>
@@ -70,6 +84,13 @@
           <a href="#skills">Skills</a>
           <a href="#contact">Contact</a>
           <a class="btn" href="Ibadullah-Khalid-CV.pdf">Download CV</a>
+        </div>
+        <div id="player-panel">
+          <div class="player-level">Lv <span id="player-level">1</span></div>
+          <div class="xp-bar" title="XP">
+            <div class="xp-fill" id="xp-fill"></div>
+          </div>
+          <button class="ach-btn" id="open-ach">Achievements</button>
         </div>
       </nav>
     </div>
@@ -148,7 +169,7 @@
             <span class="chip">Shader Graph</span>
           </div>
         </article>
-        <!-- Dead Extraction removed per request -->
+        
         <article class="card project">
           <div class="subtle mono">Unity • Prototype</div>
           <h3>Red Bread Repossession</h3>
@@ -167,7 +188,7 @@
       <div class="card">
         <div class="timeline">
           <div class="row">
-            <strong>Team Lead Software Engineer — Sabro Technologies</strong> · <span class="subtle">Mar 2023 – Present</span>
+            <strong>Team Lead Software Engineer — Sabro Technologies</strong> · <span class="subtle">Mar 2022 – Present</span>
             <ul>
               <li>Built Sabro’s software team from <strong>zero to it's Current.</strong> led hiring, mentoring, and reviews.</li>
               <li>Architected real‑time tools in C#/.NET (WPF/WinForms), WebSocket & MQTT streaming, automated PDF/Excel exports.</li>
@@ -247,6 +268,114 @@
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // --- Simple Gamification Script ---
+    (function(){
+      const KEY = 'portfolio_gamestate_v1';
+      const XP_PER_LEVEL = 100;
+      const achievements = [
+        {id:'visited_projects', title:'Visited Projects', xp:20},
+        {id:'visited_experience', title:'Visited Experience', xp:20},
+        {id:'visited_skills', title:'Visited Skills', xp:20},
+        {id:'visited_contact', title:'Viewed Contact', xp:10},
+        {id:'clicked_hands', title:'Clicked Hands of the End', xp:30},
+        {id:'visited_itch', title:'Visited Itch.io', xp:15}
+      ];
+
+      const defaultState = {xp:0, unlocked:{}};
+      let state = load();
+
+      function load(){
+        try{const s=JSON.parse(localStorage.getItem(KEY));return s||Object.assign({},defaultState)}catch(e){return Object.assign({},defaultState)}
+      }
+      function save(){localStorage.setItem(KEY, JSON.stringify(state))}
+
+      function render(){
+        const lvl = Math.floor(state.xp / XP_PER_LEVEL) + 1;
+        const progress = state.xp % XP_PER_LEVEL;
+        document.getElementById('player-level').textContent = lvl;
+        document.getElementById('xp-fill').style.width = Math.min(100, (progress/XP_PER_LEVEL*100)) + '%';
+      }
+
+      function showToast(msg){
+        let t = document.getElementById('toast');
+        if(!t){t = document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}
+        t.textContent = msg; t.classList.add('show');
+        clearTimeout(t._timeout); t._timeout = setTimeout(()=>t.classList.remove('show'),2500);
+      }
+
+      function unlock(id){
+        if(state.unlocked[id]) return false;
+        const ach = achievements.find(a=>a.id===id);
+        state.unlocked[id]=true;
+        if(ach) addXP(ach.xp, `Unlocked: ${ach.title}`);
+        save(); render(); return true;
+      }
+
+      function addXP(amount, reason){
+        state.xp = (state.xp||0) + amount;
+        save(); render();
+        if(reason) showToast(`+${amount} XP — ${reason}`);
+      }
+
+      // Award on section visibility (once each)
+      const sections = [
+        {id:'projects', ach:'visited_projects'},
+        {id:'experience', ach:'visited_experience'},
+        {id:'skills', ach:'visited_skills'},
+        {id:'contact', ach:'visited_contact'}
+      ];
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ const s = sections.find(x=>x.id===e.target.id); if(s){ if(!state.unlocked[s.ach]){ unlock(s.ach); } } }
+        });
+      },{threshold:0.5});
+      sections.forEach(s=>{const el=document.getElementById(s.id); if(el) obs.observe(el)});
+
+      // Project click for specific unlocks
+      document.querySelectorAll('.project').forEach(proj=>{
+        proj.addEventListener('click',()=>{
+          const title = proj.querySelector('h3')?.textContent || 'Project';
+          if(title.includes('Hands')) unlock('clicked_hands');
+          addXP(5, `Viewed ${title}`);
+        });
+      });
+
+      // Track Itch.io visits (click)
+      document.querySelectorAll('a[href*="itch.io"]').forEach(a=>{
+        a.addEventListener('click',()=>{ unlock('visited_itch'); });
+      });
+
+      // Achievements modal UI
+      function buildModal(){
+        let modal = document.getElementById('ach-modal');
+        if(modal) return modal;
+        modal = document.createElement('div'); modal.id='ach-modal'; modal.className='ach-modal';
+        const panel = document.createElement('div'); panel.className='ach-panel';
+        panel.innerHTML = `<strong>Achievements</strong><div class="ach-list" id="ach-list"></div><div style="margin-top:12px;text-align:right"><button id="close-ach" class="ach-btn">Close</button></div>`;
+        modal.appendChild(panel); document.body.appendChild(modal);
+        document.getElementById('close-ach').addEventListener('click',()=>modal.classList.remove('open'));
+        return modal;
+      }
+
+      function renderModal(){
+        const modal = buildModal();
+        const list = modal.querySelector('#ach-list'); list.innerHTML='';
+        achievements.forEach(a=>{
+          const item = document.createElement('div'); item.className='ach-item';
+          item.innerHTML = `<div>${a.title}</div><div>${state.unlocked[a.id]?'<span class="badge">Unlocked</span>':'<span class="badge">Locked</span>'}</div>`;
+          list.appendChild(item);
+        });
+      }
+
+      document.getElementById('open-ach').addEventListener('click',()=>{ const m = buildModal(); renderModal(); m.classList.add('open'); });
+
+      // Initial render
+      render();
+
+      // Expose for console quick-test
+      window.__portfolioGame = {state, addXP, unlock, renderModal};
+    })();
   </script>
 </body>
 </html>

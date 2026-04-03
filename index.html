@@ -3,379 +3,667 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ibadullah Khalid — Portfolio</title>
-  <meta name="description" content="Team Lead Software Engineer & Indie Game Developer. Unity/C#, C++, gameplay systems, tools, and embedded simulations." />
-  <meta property="og:title" content="Ibadullah Khalid — Portfolio" />
-  <meta property="og:description" content="Team Lead Software Engineer & Indie Game Developer. Unity/C#, C++, gameplay systems, tools, and embedded simulations." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://avatars.githubusercontent.com/u/" />
-  <meta name="theme-color" content="#0f172a" />
+  <title>Ibad Ullah — Portfolio</title>
+  <meta name="description" content="Software Engineer & Game Developer. Unity/C#, C++, gameplay systems, tools, and embedded simulations." />
+  
+  <meta name="theme-color" content="#050810" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Import Model Viewer -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
   <style>
-    :root{
-      --bg:#0b1020; --panel:#0f172a; --muted:#9aa4b2; --text:#e6edf3; --accent:#7dd3fc; --accent-2:#a78bfa; --ring:#60a5fa; --card:#111827;
-      --chip:#111827; --chip-text:#cbd5e1; --border:#1f2937; --link:#93c5fd; --success:#34d399; --warning:#f59e0b;
+    :root {
+      --bg: #030612;
+      --bg-glow: #111e3b;
+      --panel: rgba(255, 255, 255, 0.03);
+      --accent: #7dd3fc;
+      --accent-alt: #4facfe;
+      --accent-purple: #8b5cf6;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --glass-blur: blur(12px);
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:linear-gradient(180deg,#0b1020 0%,#0b1020 40%,#111827 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    a{color:var(--link);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .container{max-width:1100px;margin:0 auto;padding:24px}
-    header{position:sticky;top:0;backdrop-filter:blur(8px);background:rgba(11,16,32,.6);border-bottom:1px solid var(--border);z-index:20}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-    .nav-links a{margin-left:18px;font-weight:600;opacity:.9}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg,#0f172a,#0b1020);color:var(--text);box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:600}
-    .btn:hover{transform:translateY(-1px);transition:.15s ease}
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:48px 0}
-    .hero h1{font-size:44px;line-height:1.05;margin:0 0 14px}
-    .hero p{color:var(--muted);font-size:18px;max-width:64ch}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0));border:1px solid var(--border);border-radius:20px;padding:22px}
-    .grid{display:grid;gap:18px}
-    .grid-3{grid-template-columns:repeat(3,1fr)}
-    .grid-2{grid-template-columns:repeat(2,1fr)}
-    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid-3,.grid-2{grid-template-columns:1fr}}
-    .section{padding:18px 0 8px}
-    .section h2{margin:8px 0 14px;font-size:28px}
-    .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--border);color:var(--chip-text);font-size:13px}
-    .stack{display:flex;flex-wrap:wrap;gap:8px}
-    .project h3{margin:8px 0 6px}
-    .project p{color:var(--muted);margin:0 0 10px}
-    .subtle{color:var(--muted)}
-    .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:flex-start}
-    footer{padding:50px 0;color:var(--muted);text-align:center}
-    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);margin:22px 0}
-    .avatar{width:84px;height:84px;border-radius:20px;background:#111827;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800}
-    .tagline{font-weight:600;letter-spacing:.2px;color:#d1fae5;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;display:inline-flex;gap:8px;align-items:center}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px;color:#9ca3af}
-    .timeline{border-left:2px dashed #334155;margin-left:10px;padding-left:16px}
-    .timeline .row{margin:0 0 14px}
-  /* Gamification styles */
-  #player-panel{display:flex;align-items:center;gap:12px}
-  .player-level{font-weight:700;font-size:13px}
-  .xp-bar{width:140px;height:10px;background:#07101a;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
-  .xp-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s ease}
-  .ach-btn{padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--chip-text);font-size:13px;cursor:pointer}
-  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;background:#071018;border:1px solid var(--border);font-size:12px;color:var(--chip-text)}
-  .ach-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.6);z-index:60}
-  .ach-modal.open{display:flex}
-  .ach-panel{background:var(--panel);border:1px solid var(--border);padding:18px;border-radius:12px;max-width:520px;width:92%;color:var(--text)}
-  .ach-list{display:grid;gap:8px;margin-top:12px}
-  .ach-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.01),transparent);border:1px solid rgba(255,255,255,.02)}
-  .toast{position:fixed;right:18px;bottom:18px;background:#0f172a;border:1px solid var(--border);padding:10px 14px;border-radius:10px;color:var(--text);box-shadow:0 8px 30px rgba(2,6,23,.6);display:none;z-index:70}
-  .toast.show{display:block}
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; padding: 0;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(79, 172, 254, 0.08), transparent 25%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Manrope', -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .brand {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: all 0.2s ease; }
+    a:hover { color: var(--accent-alt); }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(3, 6, 18, 0.7);
+      backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--text-main), var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { font-weight: 500; font-size: 15px; color: var(--text-main); opacity: 0.9; }
+    .nav-links a:hover { opacity: 1; color: var(--accent); }
+    
+    .btn {
+      background: linear-gradient(135deg, var(--accent-alt), var(--accent-purple));
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 99px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(79, 172, 254, 0.2);
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn:hover {
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+      transform: translateY(-2px);
+      color: #fff;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+    .btn-outline:hover { background: var(--panel); border-color: var(--accent); }
+    
+    .btn-small {
+      padding: 6px 14px;
+      font-size: 13px;
+      margin-top: 15px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 100px 0 80px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .hero-tagline {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      background: rgba(139, 92, 246, 0.1);
+      color: #d8b4fe;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; justify-content: center; }
+
+    /* Section Geometry */
+    .section { padding: 80px 0; }
+    .section-header {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 40px;
+      letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* Glass Cards */
+    .card {
+      background: var(--panel);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Projects Grid with 3D Models */
+    .project-grid {
+      display: grid;
+      gap: 32px;
+    }
+    .project-card {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      align-items: center;
+      overflow: hidden;
+      padding: 0;
+    }
+    .project-content { padding: 40px; }
+    .project-content h3 { font-size: 28px; margin-bottom: 16px; }
+    .project-content p { color: var(--text-muted); font-size: 16px; }
+    
+    .project-model {
+      width: 100%;
+      height: 100%;
+      min-height: 350px;
+      background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    model-viewer {
+      width: 100%;
+      height: 400px;
+      --poster-color: transparent;
+    }
+
+    /* Standard Grid for minor projects */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    /* Skills Chips */
+    .skills-group { margin-bottom: 24px; }
+    .skills-group h4 { font-family: 'Manrope'; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
+    .chip-stack { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+      transition: all 0.2s;
+    }
+    .chip:hover {
+      background: rgba(79, 172, 254, 0.15);
+      border-color: rgba(79, 172, 254, 0.3);
+      color: #fff;
+    }
+
+    /* Experience Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-alt), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 48px; }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-node {
+      position: absolute;
+      left: -38px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-alt);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 10px var(--accent-alt);
+    }
+    .timeline-item h3 { font-size: 22px; margin-bottom: 4px; }
+    .timeline-item .meta { color: var(--accent); font-weight: 600; font-size: 15px; margin-bottom: 16px; }
+    .timeline-item ul { padding-left: 20px; color: var(--text-muted); }
+    .timeline-item li { margin-bottom: 10px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Modal Gallery */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 999; 
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(5px);
+      align-items: center; 
+      justify-content: center;
+    }
+    .modal-content {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      background: var(--bg);
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .close-btn {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: #fff;
+      font-size: 36px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close-btn:hover { color: var(--accent); }
+    
+    .gallery-thumbs img {
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .gallery-thumbs img:hover, .gallery-thumbs img.active {
+      opacity: 1;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 48px; }
+      .project-card { grid-template-columns: 1fr; }
+      .project-model { min-height: 300px; border-top: 1px solid var(--border); }
+      .project-content { padding: 24px; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- SVG Filter for Pixelation -->
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
+    <defs>
+      <filter id="pixelate" x="0" y="0">
+        <feFlood x="4" y="4" height="2" width="2"/>
+        <feComposite width="8" height="8"/>
+        <feTile result="a"/>
+        <feComposite in="SourceGraphic" in2="a" operator="in" result="b"/>
+        <feMorphology operator="dilate" radius="4"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Image Gallery Modal -->
+  <div id="imageModal" class="modal" onclick="if(event.target===this) this.style.display='none'">
+    <div class="modal-content">
+      <span class="close-btn" onclick="document.getElementById('imageModal').style.display='none'">&times;</span>
+      <img id="modalImg" src="" style="width:100%; max-height: 60vh; object-fit: contain; border-radius: 12px; background: #000;">
+      <div id="modalGallery" class="gallery-thumbs" style="display:flex; gap:10px; margin-top:20px; overflow-x:auto; padding-bottom:10px;"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
   <header>
     <div class="container">
       <nav>
-        <div style="display:flex;align-items:center;gap:14px">
-          <div class="avatar">IK</div>
-          <div>
-            <strong>Ibadullah Khalid</strong><br/>
-            <span class="mono">Team Lead • Indie Game Dev</span>
-          </div>
-        </div>
+        <div class="brand">Ibad Ullah</div>
         <div class="nav-links">
           <a href="#projects">Projects</a>
           <a href="#experience">Experience</a>
           <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-          <a class="btn" href="Ibadullah-Khalid-CV.pdf">Download CV</a>
-        </div>
-        <div id="player-panel">
-          <div class="player-level">Lv <span id="player-level">1</span></div>
-          <div class="xp-bar" title="XP">
-            <div class="xp-fill" id="xp-fill"></div>
-          </div>
-          <button class="ach-btn" id="open-ach">Achievements</button>
+          <a href="https://github.com/Ebad018" target="_blank" class="btn btn-outline">GitHub</a>
         </div>
       </nav>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div>
-        <span class="tagline">Building teams & worlds</span>
-        <h1>Lead Programmer • Gameplay & Systems • Unity/C# & C++</h1>
-        <p>
-          I design and ship real‑time systems—from <strong>gameplay mechanics and tools</strong> in Unity to
-          <strong>embedded simulations</strong> with ESP32 and C++. I've built a software team from scratch at
-          <strong>Sabro Technologies</strong>, led architecture and processes, and shipped a stack of production tools.
-        </p>
-        <div style="display:flex;gap:12px;margin-top:16px">
-          <a class="btn" href="#projects">View Projects</a>
-          <a class="btn" href="https://github.com/Ebad018" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="grid grid-2">
-          <div>
-            <div class="subtle">Primary</div>
-            <div class="stack" style="margin-top:8px">
-              <span class="chip">Unity (2D/3D)</span>
-              <span class="chip">C#</span>
-              <span class="chip">C++</span>
-              <span class="chip">.NET</span>
-              <span class="chip">Shader Graph</span>
-            </div>
-          </div>
-          <div>
-            <div class="subtle">Systems</div>
-            <div class="stack" style="margin-top:8px">
-              <span class="chip">AI / NavMesh</span>
-              <span class="chip">State Machines</span>
-              <span class="chip">Networking (MQTT/WebSocket)</span>
-              <span class="chip">Tools & Pipelines</span>
-            </div>
-          </div>
-          <div>
-            <div class="subtle">Embedded</div>
-            <div class="stack" style="margin-top:8px">
-              <span class="chip">ESP32</span>
-              <span class="chip">Modbus RTU</span>
-              <span class="chip">ESP‑NOW</span>
-            </div>
-          </div>
-          <div>
-            <div class="subtle">Leadership</div>
-            <div class="stack" style="margin-top:8px">
-              <span class="chip">Team Building</span>
-              <span class="chip">Hiring & Mentoring</span>
-              <span class="chip">Agile</span>
-              <span class="chip">Code Review</span>
-            </div>
-          </div>
-        </div>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero container">
+      <span class="hero-tagline">Architecting Systems, Building Worlds</span>
+      <h1>Software Engineer <br/><span style="color:var(--text-muted)">&</span> Game Developer</h1>
+      <p>
+        Full Stack .NET Developer and Game Developer with over 5 years of experience delivering robust desktop, web, embedded solutions, and interactive games. Extensive expertise spanning <strong>Unity/C#, C++, .NET Core</strong>, and <strong>Embedded IoT systems</strong>.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn">View My Work</a>
+        <a href="mailto:ibadullah.k81@gmail.com" class="btn btn-outline">Contact Me</a>
       </div>
     </section>
 
-    <div class="divider"></div>
-
-    <section id="projects" class="section">
-      <h2>Selected Projects</h2>
-      <div class="grid grid-3">
-        <article class="card project">
-          <div class="subtle mono">Unity • WIP</div>
-          <h3>Hands of the End</h3>
-          <p>First‑person spellcasting with a <strong>gesture/hand‑sign</strong> system, AI enemies, and a retro pixel aesthetic.
-            Built mechanics, shader look, and UI solo.</p>
-          <div class="stack">
-            <span class="chip">Gesture System</span>
-            <span class="chip">AI</span>
-            <span class="chip">Shader Graph</span>
+    <!-- Projects Section with 3D Models !-->
+    <section id="projects" class="container section">
+      <h2 class="section-header">Featured Projects</h2>
+      
+      <div class="project-grid">
+        
+        <!-- Project 1: Hands of the End -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #8b5cf6; color: #d8b4fe; background: rgba(139, 92, 246, 0.1);">Unity / Pixel Filter</span>
+            <h3>Hands of the End</h3>
+            <p>A Roguelike / Vampire Survival Game where you, as a Mage, are chosen as the Guardian of a village—the last civilization remaining. Designed, coded, and crafted mostly solo with an impressive blend of 2D pixel art and 3D worlds.</p>
+            <button class="btn btn-outline btn-small" onclick="openGallery(['assets/Hands of the end.png', 'assets/Hands of the end (2).png', 'assets/Hands of the End (3).png', 'assets/Hands of the end (4).png'])">
+              View Screenshots
+            </button>
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">Unity</span>
+              <span class="chip">C#</span>
+              <span class="chip">Shader Graph</span>
+              <span class="chip">AI Systems</span>
+            </div>
           </div>
+          <div class="project-model">
+            <!-- Applied an SVG filter directly via style to achieve the Pixelated look -->
+            <model-viewer 
+              src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" 
+              alt="Hands of the End 3D Model"
+              auto-rotate
+              camera-controls
+              autoplay
+              animation-name="Running"
+              shadow-intensity="1"
+              style="image-rendering: pixelated;">
+            </model-viewer>
+          </div>
+        </article>
+
+        <!-- Project 2: Red Bread Repo -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #ef4444; color: #fca5a5; background: rgba(239, 68, 68, 0.1);">Unity / C#</span>
+            <h3>Red Bread Repossession</h3>
+            <p>Split-screen Western duel game requiring intense reflex shootouts. Features multi-stage "Draw, Cock, Fire" mechanics via timed sequential presses. Programmed duel logic and UI timers.</p>
+            <button class="btn btn-outline btn-small" onclick="openGallery(['assets/Red Bread Repo.png', 'assets/Red Bread Repo (2).png', 'assets/Red Bread Repo (3).png'])">
+              View Screenshots
+            </button>
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">Unity</span>
+              <span class="chip">Local Multiplayer</span>
+              <span class="chip">Input Systems</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(239, 68, 68, 0.1), transparent 70%);">
+            <model-viewer 
+              src="assets/red_fella.glb" 
+              alt="Red Bread Repossession 3D Model"
+              auto-rotate
+              camera-controls
+              autoplay
+              shadow-intensity="1">
+            </model-viewer>
+          </div>
+        </article>
+
+        <!-- Project 3: Project Pharaoh -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #f59e0b; color: #fcd34d; background: rgba(245, 158, 11, 0.1);">Unity / Strategy</span>
+            <h3>Project Pharaoh</h3>
+            <p>A survival and strategy game focused on complex mechanics incorporating procedural terrain generation and robust first-person player movement, aiming towards an intricate resource system.</p>
+            <button class="btn btn-outline btn-small" onclick="openGallery(['assets/Project Pharaoh.png', 'assets/Project Pharaoh 2.png'])">
+              View Screenshots
+            </button>
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">Procedural Generation</span>
+              <span class="chip">First-Person</span>
+              <span class="chip">Resource Systems</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(245, 158, 11, 0.1), transparent 70%);">
+            <model-viewer 
+              src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" 
+              alt="Project Pharaoh 3D Model"
+              auto-rotate
+              camera-controls
+              autoplay
+              animation-name="Walk"
+              shadow-intensity="1">
+            </model-viewer>
+          </div>
+        </article>
+
+      </div>
+
+      <h2 class="section-header" style="margin-top: 80px; font-size: 28px;">More Works</h2>
+      <div class="grid-3">
+        <!-- Minor Project: SmolTheftAuto -->
+        <article class="card">
+          <h3>SmolTheftAuto</h3>
+          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;">Engineered a core vehicle system with a physics-based movement controller and player entry/exit mechanics, featuring modular seat interactions and NPC persistence.</p>
+          <div class="chip-stack"><span class="chip">Unity</span><span class="chip">Vehicle Physics</span><span class="chip">NPC Logic</span></div>
         </article>
         
-        <article class="card project">
-          <div class="subtle mono">Unity • Prototype</div>
-          <h3>Red Bread Repossession</h3>
-          <p>Local split‑screen QTE duel parody. Randomized prompts, timing logic, and comedic feedback for party play.</p>
-          <div class="stack">
-            <span class="chip">QTE System</span>
-            <span class="chip">Split‑Screen</span>
-            <span class="chip">UI</span>
-          </div>
+        <!-- Minor Project: VampireSurvivalClone -->
+        <article class="card">
+          <h3>VampireSurvivalClone</h3>
+          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;">A 2D Geometric Shapes Art styled game built with C++ and RayLib. Focuses heavily on strict Game Design Patterns (Factory Pattern, Object Pooling, Observers).</p>
+          <div class="chip-stack"><span class="chip">C++</span><span class="chip">RayLib</span><span class="chip">Design Patterns</span></div>
+        </article>
+
+        <!-- Minor Project: CFS -->
+        <article class="card">
+          <h3>Cultivation Fortress Sim</h3>
+          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;">A Dwarf Fortress inspired Cultivation/Martial arts management game built in C++. Architected robust and scalable initial management systems natively.</p>
+          <div class="chip-stack"><span class="chip">C++</span><span class="chip">Simulation Systems</span></div>
         </article>
       </div>
     </section>
 
-    <section id="experience" class="section">
-      <h2>Experience</h2>
-      <div class="card">
+    <!-- Experience Timeline -->
+    <section id="experience" class="container section">
+      <h2 class="section-header">Professional Experience</h2>
+      <div class="card" style="padding: 40px;">
         <div class="timeline">
-          <div class="row">
-            <strong>Team Lead Software Engineer — Sabro Technologies</strong> · <span class="subtle">Mar 2022 – Present</span>
-            <ul>
-              <li>Architected and deployed 12+ C# WinForms and WPF desktop utilities tightly integrated with Windows (system tray apps, global hotkeys, MSI installer, context‑menu integration).</li>
-              <li>Created a modular QA Suite used in AC testing labs: real‑time Modbus RTU communication, WebSocket & MQTT data logging, and on‑demand PDF / Excel report generation.</li>
-              <li>Built overlay performance monitors (FPS‑style overlays) and always‑on‑top controls for compressor testing; used P/Invoke (user32.dll) to enumerate windows, manipulate z‑order, and programmatically activate apps.</li>
-              <li>Developed PowerShell automation to provision test labs, deploy firewall rules, and manage serial‑port permissions.</li>
-              <li>Owned engineering practices: hiring, mentoring, code review, CI, coding standards.</li>
-              <li>Designed and shipped a Diagnostic Tool and OTA flow used for device diagnostics and firmware updates.</li>
-              <li>Authored a WinForms Internal diagnostic tool &amp; serial‑monitor — WebSocket multi‑port client for ESP32, dual‑mode AC &amp; Boiler binary parsers, robust auto‑resync for malformed payloads, CSV logging organized by ambient temperature bins, Huber linear ML models for suction/discharge prediction, dynamic UI builders for device‑specific views, and an OTA/update flow for field firmware provisioning.</li>
-            </ul>
-          </div>
-          <div class="row">
-            <strong>Junior Software Engineer — Sabro Technologies</strong> · <span class="subtle">Jan 2021 – Feb 2022</span>
-            <ul>
-              <li>Built C# utilities for HVAC test labs and Modbus RTU tools for sensors and relays.</li>
-              <li>Developed ESP32 firmware in C++ for motors and compressors and implemented secure IoT protocols (ESP‑NOW, MQTT, WebSocket).</li>
-              <li>Implemented C++ HVAC applications integrated with ESP32 and supported embedded↔app integration (see attached `Form1.cs`).</li>
-              <li>Mentored and collaborated with a multidisciplinary team (~5 engineers across Flutter, Android, UI/UX, and Embedded).</li>
-            </ul>
-          </div>
           
+          <div class="timeline-item">
+            <div class="timeline-node"></div>
+            <h3>Lead Software Engineer</h3>
+            <div class="meta">Sabro Technologies — Islamabad, PK | Jan 2023 – Feb 2026</div>
+            <ul>
+              <li>Successfully presented a strategic proposal to the BoD, advocating for Sabro's expansion into software-driven solutions.</li>
+              <li>Spearheaded architecture, planning, and deployment of in-house platforms (ERP, Quality Control, CRM) using C#, .NET, Firebase, and Dynamics 365.</li>
+              <li>Managed a cross-functional team of 10+ engineers (frontend, backend, embedded, QA); overseeing daily standups and sprint pipelines.</li>
+              <li>Developed Modbus RTU tools for real-time HVAC control, accompanied by Flutter mobile MQTT dashboards.</li>
+              <li>Authored technical documentation, B2B product demonstrations, and deployed Firebase-powered offline-first apps for factory personnel.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-node"></div>
+            <h3>Software Engineer → Senior Developer</h3>
+            <div class="meta">Sabro Technologies — Islamabad, PK | Apr 2020 – Dec 2022</div>
+            <ul>
+              <li>Reverse-engineered imported AC board protocols and collaborated with embedded engineers for ESP32 firmware-to-desktop bridging.</li>
+              <li>Digitized internal workflows, achieving an 80% reduction in manual log entries across QA and Inventory.</li>
+              <li>Engineered a modular internal ERP system via WinForms, .NET, and SQL Server.</li>
+              <li>Developed C# diagnostic software executing unit health checks spanning compressor RPM, relays, and PDF report generation.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-node"></div>
+            <h3>Technical Support Engineer</h3>
+            <div class="meta">MFL — Karachi (Remote) | 2019 – 2020</div>
+            <ul>
+              <li>Provided remote technical support emphasizing Excel Macros automation and CRM data setups.</li>
+              <li>Facilitated company transitions to cloud-shared tools like SharePoint.</li>
+            </ul>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <section id="skills" class="section">
-      <h2>Skills</h2>
+    <!-- Skills Grid -->
+    <section id="skills" class="container section">
+      <h2 class="section-header">Technical Skillset</h2>
       <div class="card">
-        <div class="grid grid-3">
-          <div>
-            <div class="subtle">Programming</div>
-            <div class="stack" style="margin-top:8px">
+        <div class="grid-3">
+          
+          <div class="skills-group">
+            <h4>Languages</h4>
+            <div class="chip-stack">
               <span class="chip">C#</span>
               <span class="chip">C++</span>
-              <span class="chip">TypeScript</span>
               <span class="chip">Dart</span>
+              <span class="chip">TypeScript</span>
+              <span class="chip">VB.NET</span>
+              <span class="chip">SQL</span>
             </div>
           </div>
-          <div>
-            <div class="subtle">Engines & Frameworks</div>
-            <div class="stack" style="margin-top:8px">
+
+          <div class="skills-group">
+            <h4>Frameworks & Engines</h4>
+            <div class="chip-stack">
               <span class="chip">Unity</span>
-              <span class="chip">.NET</span>
-              <span class="chip">Blazor</span>
+              <span class="chip">.NET 6 / Core</span>
               <span class="chip">Flutter</span>
+              <span class="chip">Entity Framework</span>
+              <span class="chip">Blazor / MVC</span>
+              <span class="chip">ReactJS</span>
             </div>
           </div>
-          <div>
-            <div class="subtle">Systems & Tools</div>
-            <div class="stack" style="margin-top:8px">
-              <span class="chip">AI / NavMesh</span>
-              <span class="chip">State Machines</span>
-              <span class="chip">Shader Graph</span>
-              <span class="chip">Pipelines & CI</span>
+
+          <div class="skills-group">
+            <h4>Database & Cloud</h4>
+            <div class="chip-stack">
+              <span class="chip">Firebase / Firestore</span>
+              <span class="chip">SQL Server / MySQL</span>
+              <span class="chip">Google Cloud</span>
+              <span class="chip">Docker</span>
+              <span class="chip">Github Actions</span>
             </div>
           </div>
+
+          <div class="skills-group">
+            <h4>Embedded & Protocols</h4>
+            <div class="chip-stack">
+              <span class="chip">Modbus RTU</span>
+              <span class="chip">MQTT</span>
+              <span class="chip">ESP32 Integration</span>
+              <span class="chip">Serial RS-485</span>
+              <span class="chip">Bluetooth</span>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <h4>Engineering Practices</h4>
+            <div class="chip-stack">
+              <span class="chip">Agile / Scrum</span>
+              <span class="chip">Test-Driven Dev (TDD)</span>
+              <span class="chip">CI/CD Pipelines</span>
+              <span class="chip">Team Building</span>
+              <span class="chip">Architecture Design</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section">
-      <h2>Contact</h2>
-      <div class="card kv">
-        <div class="subtle">Email</div><div><a href="mailto:ibadullah.k81@gmail.com">ibadullah.k81@gmail.com</a></div>
-        <div class="subtle">GitHub</div><div><a href="https://github.com/Ebad018" target="_blank" rel="noreferrer">github.com/Ebad018</a></div>
-  <div class="subtle">Itch.io</div><div><a href="https://ebad018.itch.io/" target="_blank" rel="noreferrer">itch.io/ebad018</a></div>
-        <div class="subtle">Location</div><div>Islamabad, Pakistan (Remote‑ready)</div>
-      </div>
-    </section>
   </main>
 
   <footer>
     <div class="container">
-      <div class="divider"></div>
-      <div>© <span id="y"></span> Ibadullah Khalid — Built with ♥ and vanilla HTML/CSS</div>
+      <p style="margin-bottom: 8px;"><strong>Ibad Ullah</strong> — Sweden, Stockholm</p>
+      <p>© <span id="y"></span> built with pristine web standards.</p>
     </div>
   </footer>
 
   <script>
+    // Footer Year
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // --- Simple Gamification Script ---
-    (function(){
-      const KEY = 'portfolio_gamestate_v1';
-      const XP_PER_LEVEL = 100;
-      const achievements = [
-        {id:'visited_projects', title:'Visited Projects', xp:20},
-        {id:'visited_experience', title:'Visited Experience', xp:20},
-        {id:'visited_skills', title:'Visited Skills', xp:20},
-        {id:'visited_contact', title:'Viewed Contact', xp:10},
-        {id:'clicked_hands', title:'Clicked Hands of the End', xp:30},
-        {id:'visited_itch', title:'Visited Itch.io', xp:15}
-      ];
-
-      const defaultState = {xp:0, unlocked:{}};
-      let state = load();
-
-      function load(){
-        try{const s=JSON.parse(localStorage.getItem(KEY));return s||Object.assign({},defaultState)}catch(e){return Object.assign({},defaultState)}
-      }
-      function save(){localStorage.setItem(KEY, JSON.stringify(state))}
-
-      function render(){
-        const lvl = Math.floor(state.xp / XP_PER_LEVEL) + 1;
-        const progress = state.xp % XP_PER_LEVEL;
-        document.getElementById('player-level').textContent = lvl;
-        document.getElementById('xp-fill').style.width = Math.min(100, (progress/XP_PER_LEVEL*100)) + '%';
-      }
-
-      function showToast(msg){
-        let t = document.getElementById('toast');
-        if(!t){t = document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}
-        t.textContent = msg; t.classList.add('show');
-        clearTimeout(t._timeout); t._timeout = setTimeout(()=>t.classList.remove('show'),2500);
-      }
-
-      function unlock(id){
-        if(state.unlocked[id]) return false;
-        const ach = achievements.find(a=>a.id===id);
-        state.unlocked[id]=true;
-        if(ach) addXP(ach.xp, `Unlocked: ${ach.title}`);
-        save(); render(); return true;
-      }
-
-      function addXP(amount, reason){
-        state.xp = (state.xp||0) + amount;
-        save(); render();
-        if(reason) showToast(`+${amount} XP — ${reason}`);
-      }
-
-      // Award on section visibility (once each)
-      const sections = [
-        {id:'projects', ach:'visited_projects'},
-        {id:'experience', ach:'visited_experience'},
-        {id:'skills', ach:'visited_skills'},
-        {id:'contact', ach:'visited_contact'}
-      ];
-      const obs = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){ const s = sections.find(x=>x.id===e.target.id); if(s){ if(!state.unlocked[s.ach]){ unlock(s.ach); } } }
-        });
-      },{threshold:0.5});
-      sections.forEach(s=>{const el=document.getElementById(s.id); if(el) obs.observe(el)});
-
-      // Project click for specific unlocks
-      document.querySelectorAll('.project').forEach(proj=>{
-        proj.addEventListener('click',()=>{
-          const title = proj.querySelector('h3')?.textContent || 'Project';
-          if(title.includes('Hands')) unlock('clicked_hands');
-          addXP(5, `Viewed ${title}`);
-        });
+    
+    // Gallery Logic
+    function openGallery(images) {
+      const modal = document.getElementById('imageModal');
+      const mainImg = document.getElementById('modalImg');
+      const gallery = document.getElementById('modalGallery');
+      
+      mainImg.src = images[0];
+      gallery.innerHTML = '';
+      
+      images.forEach((src, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = src;
+        thumb.style.height = '80px';
+        thumb.style.cursor = 'pointer';
+        thumb.style.borderRadius = '8px';
+        thumb.style.border = '2px solid transparent';
+        if(idx === 0) thumb.classList.add('active');
+        
+        thumb.onclick = () => { 
+          mainImg.src = src; 
+          document.querySelectorAll('.gallery-thumbs img').forEach(i => i.classList.remove('active'));
+          thumb.classList.add('active');
+        };
+        gallery.appendChild(thumb);
       });
-
-      // Track Itch.io visits (click)
-      document.querySelectorAll('a[href*="itch.io"]').forEach(a=>{
-        a.addEventListener('click',()=>{ unlock('visited_itch'); });
-      });
-
-      // Achievements modal UI
-      function buildModal(){
-        let modal = document.getElementById('ach-modal');
-        if(modal) return modal;
-        modal = document.createElement('div'); modal.id='ach-modal'; modal.className='ach-modal';
-        const panel = document.createElement('div'); panel.className='ach-panel';
-        panel.innerHTML = `<strong>Achievements</strong><div class="ach-list" id="ach-list"></div><div style="margin-top:12px;text-align:right"><button id="close-ach" class="ach-btn">Close</button></div>`;
-        modal.appendChild(panel); document.body.appendChild(modal);
-        document.getElementById('close-ach').addEventListener('click',()=>modal.classList.remove('open'));
-        return modal;
-      }
-
-      function renderModal(){
-        const modal = buildModal();
-        const list = modal.querySelector('#ach-list'); list.innerHTML='';
-        achievements.forEach(a=>{
-          const item = document.createElement('div'); item.className='ach-item';
-          item.innerHTML = `<div>${a.title}</div><div>${state.unlocked[a.id]?'<span class="badge">Unlocked</span>':'<span class="badge">Locked</span>'}</div>`;
-          list.appendChild(item);
-        });
-      }
-
-      document.getElementById('open-ach').addEventListener('click',()=>{ const m = buildModal(); renderModal(); m.classList.add('open'); });
-
-      // Initial render
-      render();
-
-      // Expose for console quick-test
-      window.__portfolioGame = {state, addXP, unlock, renderModal};
-    })();
+      modal.style.display = 'flex';
+    }
   </script>
 </body>
 </html>

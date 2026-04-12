@@ -512,6 +512,35 @@
           </div>
         </article>
 
+        <!-- Project 4: Whack-A-Mole -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #10b981; color: #6ee7b7; background: rgba(16, 185, 129, 0.1);">Unity / 2D Gameplay</span>
+            <h3>Whack-A-Mole</h3>
+            <p>A feature-rich 2D Whack-A-Mole game built in Unity. Demonstrates strong collaborative software engineering practices with a decoupled architecture.</p>
+
+            <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
+              <strong style="color: #6ee7b7;">Engineering Highlights:</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 0;">
+                <li><strong>Architecture:</strong> Clean separation of Gameplay logic from peripheral UI/Audio systems using C# Actions and Events.</li>
+                <li><strong>Mechanics:</strong> Built a dynamic Coroutine-based State Machine for Mole logic (Empty, Hitable, Hit, Miss) with automated 3x3 procedural grid generation.</li>
+                <li><strong>Systems:</strong> Engineered complex routines for dynamic difficulty scaling using Lerp over game duration.</li>
+              </ul>
+            </div>
+
+            <a href="https://ebad018.itch.io/wackamole" target="_blank" class="btn btn-outline btn-small" style="margin-bottom: 24px;">Play on Itch.io</a>
+            
+            <div class="chip-stack">
+              <span class="chip">Unity</span>
+              <span class="chip">Event-Driven Design</span>
+              <span class="chip">State Machines</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1), transparent 70%);">
+            <img id="mole-anim" src="assets/empty hole.png" alt="Whack-A-Mole Animation" style="width: 250px; height: 250px; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transform: scale(1.5);">
+          </div>
+        </article>
+
       </div>
 
       <h2 class="section-header" style="margin-top: 80px; font-size: 28px;">More Works</h2>
@@ -690,6 +719,23 @@
         gallery.appendChild(thumb);
       });
       modal.style.display = 'flex';
+    }
+
+    // Whack-A-Mole Animation
+    const moleFrames = [
+      'assets/empty hole.png',
+      'assets/Miss.png',
+      'assets/Hitable.png',
+      'assets/Miss.png',
+      'assets/empty hole.png'
+    ];
+    let currentMoleFrame = 0;
+    const moleImg = document.getElementById('mole-anim');
+    if(moleImg) {
+      setInterval(() => {
+        currentMoleFrame = (currentMoleFrame + 1) % moleFrames.length;
+        moleImg.src = moleFrames[currentMoleFrame];
+      }, 500); // 500ms per frame
     }
   </script>
 </body>

@@ -356,10 +356,11 @@
   </svg>
 
   <!-- Image Gallery Modal -->
-  <div id="imageModal" class="modal" onclick="if(event.target===this) this.style.display='none'">
+  <div id="imageModal" class="modal" onclick="if(event.target===this) { this.style.display='none'; const vid=document.getElementById('modalVid'); if(vid) vid.pause(); }">
     <div class="modal-content">
-      <span class="close-btn" onclick="document.getElementById('imageModal').style.display='none'">&times;</span>
+      <span class="close-btn" onclick="document.getElementById('imageModal').style.display='none'; const vid=document.getElementById('modalVid'); if(vid) vid.pause();">&times;</span>
       <img id="modalImg" src="" style="width:100%; max-height: 60vh; object-fit: contain; border-radius: 12px; background: #000;">
+      <video id="modalVid" controls autoplay loop muted style="width:100%; max-height: 60vh; object-fit: contain; border-radius: 12px; background: #000; display: none;"></video>
       <div id="modalGallery" class="gallery-thumbs" style="display:flex; gap:10px; margin-top:20px; overflow-x:auto; padding-bottom:10px;"></div>
     </div>
   </div>
@@ -441,26 +442,27 @@
         <!-- Project 2: Red Bread Repo -->
         <article class="card project-card">
           <div class="project-content">
-            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #ef4444; color: #fca5a5; background: rgba(239, 68, 68, 0.1);">Unity / C#</span>
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #ef4444; color: #fca5a5; background: rgba(239, 68, 68, 0.1);">Unity / Netcode (NGO)</span>
             <h3>Red Bread Repossession</h3>
-            <p>Split-screen Western duel game requiring intense reflex shootouts. Features multi-stage "Draw, Cock, Fire" mechanics via timed sequential presses. Programmed duel logic and UI timers.</p>
+            <p>A robust, multiplayer-ready 3rd person shooter featuring advanced server-client architecture. Built with Unity Netcode for GameObjects and Unity Gaming Services for seamless matchmaking and Relay NAT punch-through.</p>
 
             <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
               <strong style="color: #fca5a5;">Engineering Highlights:</strong>
               <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 0;">
-                <li><strong>Design Patterns:</strong> Asynchronous State Machines tracking deterministic game phases.</li>
-                <li><strong>Architecture:</strong> Coroutine implementations controlling strict timing, pacing, and mid-air draw states down to milliseconds.</li>
-                <li><strong>Systems:</strong> Broad abstract input polling syncing disparate devices correctly in local multiplayer.</li>
+                <li><strong>Architecture:</strong> Authoritative Server with Client-Side Prediction and fixed 60Hz tick-based simulation.</li>
+                <li><strong>Design Patterns:</strong> Modular State Machines for player logic (Locomotion, Aiming), decoupled from visual interpolation.</li>
+                <li><strong>Systems:</strong> Lightweight struct-based network payloads and Scriptable Object Event Channels for lobby decoupling.</li>
               </ul>
             </div>
 
-            <button class="btn btn-outline btn-small" onclick="openGallery(['assets/Red Bread Repo.png', 'assets/Red Bread Repo (2).png', 'assets/Red Bread Repo (3).png'])">
+            <button class="btn btn-outline btn-small" onclick="openGallery(['assets/RedBreadMenu.mp4', 'assets/Red Bread Repo (2).png', 'assets/Red Bread Repo (3).png'])">
               View Screenshots
             </button>
             <div class="chip-stack" style="margin-top: 24px;">
-              <span class="chip">Unity</span>
-              <span class="chip">Local Multiplayer</span>
-              <span class="chip">Input Systems</span>
+              <span class="chip">Unity NGO</span>
+              <span class="chip">Unity Relay</span>
+              <span class="chip">Client Prediction</span>
+              <span class="chip">Tick Simulation</span>
             </div>
           </div>
           <div class="project-model" style="background: radial-gradient(circle at center, rgba(239, 68, 68, 0.1), transparent 70%);">
@@ -694,17 +696,44 @@
     document.getElementById('y').textContent = new Date().getFullYear();
     
     // Gallery Logic
-    function openGallery(images) {
+    function openGallery(mediaList) {
       const modal = document.getElementById('imageModal');
       const mainImg = document.getElementById('modalImg');
+      const mainVid = document.getElementById('modalVid');
       const gallery = document.getElementById('modalGallery');
       
-      mainImg.src = images[0];
+      const setMainMedia = (src) => {
+        if (src.endsWith('.mp4') || src.endsWith('.webm')) {
+          mainImg.style.display = 'none';
+          if (mainVid) {
+            mainVid.style.display = 'block';
+            mainVid.src = src;
+            mainVid.play();
+          }
+        } else {
+          if (mainVid) {
+            mainVid.style.display = 'none';
+            mainVid.pause();
+          }
+          mainImg.style.display = 'block';
+          mainImg.src = src;
+        }
+      };
+
+      setMainMedia(mediaList[0]);
       gallery.innerHTML = '';
       
-      images.forEach((src, idx) => {
-        const thumb = document.createElement('img');
-        thumb.src = src;
+      mediaList.forEach((src, idx) => {
+        let thumb;
+        if (src.endsWith('.mp4') || src.endsWith('.webm')) {
+          thumb = document.createElement('video');
+          thumb.src = src;
+          thumb.muted = true;
+        } else {
+          thumb = document.createElement('img');
+          thumb.src = src;
+        }
+        
         thumb.style.height = '80px';
         thumb.style.cursor = 'pointer';
         thumb.style.borderRadius = '8px';
@@ -712,8 +741,8 @@
         if(idx === 0) thumb.classList.add('active');
         
         thumb.onclick = () => { 
-          mainImg.src = src; 
-          document.querySelectorAll('.gallery-thumbs img').forEach(i => i.classList.remove('active'));
+          setMainMedia(src);
+          document.querySelectorAll('.gallery-thumbs img, .gallery-thumbs video').forEach(i => i.classList.remove('active'));
           thumb.classList.add('active');
         };
         gallery.appendChild(thumb);

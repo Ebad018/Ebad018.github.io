@@ -399,6 +399,38 @@
       <h2 class="section-header">Featured Projects</h2>
       
       <div class="project-grid">
+
+        <!-- Project 0: FERP -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #3b82f6; color: #93c5fd; background: rgba(59, 130, 246, 0.1);">React / Electron / Node.js</span>
+            <h3>FERP (Fuel Station ERP)</h3>
+            <p>A highly specialized, offline-first Enterprise Resource Planning (ERP) SaaS platform built explicitly for fuel station businesses targeting Pakistan, developed on custom request from a fuel station owner.</p>
+            
+            <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
+              <strong style="color: #93c5fd;">Engineering Highlights:</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 0;">
+                <li><strong>Architecture:</strong> Delivered uninterrupted operational capability for fuel stations in low-connectivity regions, ensuring zero data loss during offline periods, by engineering an Offline-First Synchronization engine using Electron, Dexie.js, and a custom massive-payload reconciliation hook.</li>
+                <li><strong>Backend Systems:</strong> Ensured absolute data privacy across independent companies, preventing cross-tenant data leakage, by architecting a strict Multi-Tenant PostgreSQL database structure interfaced via Prisma ORM.</li>
+                <li><strong>Algorithms:</strong> Automated exact fuel volume calculations and double-entry accounting, eliminating manual errors and flagging potential theft, by developing precise tank calibration algorithms and shift balancing routines.</li>
+              </ul>
+            </div>
+
+            <button class="btn btn-outline btn-small" onclick="openGallery(['assets/FERP1.png', 'assets/FERP2.png'])">
+              View Screenshots
+            </button>
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">React & TS</span>
+              <span class="chip">Electron</span>
+              <span class="chip">Node.js</span>
+              <span class="chip">PostgreSQL</span>
+              <span class="chip">Offline-First</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent 70%); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px;">
+            <img src="assets/FERP1.png" alt="FERP Dashboard" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
+          </div>
+        </article>
         
         <!-- Project 1: Hands of the End -->
         <article class="card project-card">

@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ibad Ullah — Portfolio</title>
-  <meta name="description" content="Software Engineer & Game Developer. Unity/C#, C++, gameplay systems, tools, and embedded simulations." />
-  
+  <title>Ibad Ullah — Software Engineer & Game Developer</title>
+  <meta name="description" content="Software Engineer & Game Developer based in Stockholm. Unity/C#, C++, gameplay systems, netcode, tools, and embedded simulations." />
+
+  <meta property="og:title" content="Ibad Ullah — Software Engineer & Game Developer" />
+  <meta property="og:description" content="Unity/C#, C++, gameplay systems, netcode, tools, and embedded simulations. Based in Stockholm, Sweden." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/Hands of the end.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23030612'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%237dd3fc'>IU</text></svg>" />
+
   <meta name="theme-color" content="#050810" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,7 +128,17 @@
       padding: 100px 0 80px;
       text-align: center;
       position: relative;
+      overflow: hidden;
     }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .hero > .container { position: relative; z-index: 1; }
     
     .hero-tagline {
       display: inline-block;
@@ -146,6 +162,36 @@
       background: linear-gradient(135deg, #ffffff, #94a3b8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+
+    .hero h1 .grad-accent {
+      background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-top: 32px;
+    }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.8);
+      display: inline-block;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     .hero p {
@@ -320,12 +366,64 @@
     }
     .close-btn:hover { color: var(--accent); }
     
-    .gallery-thumbs img {
+    .gallery-thumbs img, .gallery-thumbs video {
       opacity: 0.5;
       transition: opacity 0.2s;
     }
-    .gallery-thumbs img:hover, .gallery-thumbs img.active {
+    .gallery-thumbs img:hover, .gallery-thumbs img.active,
+    .gallery-thumbs video:hover, .gallery-thumbs video.active {
       opacity: 1;
+    }
+
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(3, 6, 18, 0.7);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: all 0.2s;
+    }
+    .gallery-nav:hover { background: rgba(79, 172, 254, 0.25); border-color: var(--accent); }
+    .gallery-nav.prev { left: -20px; }
+    .gallery-nav.next { right: -20px; }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .status-dot { animation: none; }
+    }
+
+    /* Mobile Menu */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-size: 20px;
+      line-height: 1;
+      padding: 8px 12px;
+      cursor: pointer;
     }
 
     /* Responsive Design */
@@ -334,9 +432,26 @@
       .project-card { grid-template-columns: 1fr; }
       .project-model { min-height: 300px; border-top: 1px solid var(--border); }
       .project-content { padding: 24px; }
+      .gallery-nav.prev { left: 8px; }
+      .gallery-nav.next { right: 8px; }
     }
     @media (max-width: 600px) {
-      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 24px;
+        background: #050810;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { display: flex; }
+      .hero-actions { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
@@ -356,9 +471,11 @@
   </svg>
 
   <!-- Image Gallery Modal -->
-  <div id="imageModal" class="modal" onclick="if(event.target===this) { this.style.display='none'; const vid=document.getElementById('modalVid'); if(vid) vid.pause(); }">
+  <div id="imageModal" class="modal" onclick="if(event.target===this) closeGallery()">
     <div class="modal-content">
-      <span class="close-btn" onclick="document.getElementById('imageModal').style.display='none'; const vid=document.getElementById('modalVid'); if(vid) vid.pause();">&times;</span>
+      <span class="close-btn" onclick="closeGallery()">&times;</span>
+      <button id="galleryPrev" class="gallery-nav prev" aria-label="Previous image">&#10094;</button>
+      <button id="galleryNext" class="gallery-nav next" aria-label="Next image">&#10095;</button>
       <img id="modalImg" src="" style="width:100%; max-height: 60vh; object-fit: contain; border-radius: 12px; background: #000;">
       <video id="modalVid" controls autoplay loop muted style="width:100%; max-height: 60vh; object-fit: contain; border-radius: 12px; background: #000; display: none;"></video>
       <div id="modalGallery" class="gallery-thumbs" style="display:flex; gap:10px; margin-top:20px; overflow-x:auto; padding-bottom:10px;"></div>
@@ -370,10 +487,12 @@
     <div class="container">
       <nav>
         <div class="brand">Ibad Ullah</div>
+        <button class="menu-toggle" aria-label="Toggle navigation menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
         <div class="nav-links">
           <a href="#projects">Projects</a>
           <a href="#experience">Experience</a>
           <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
           <a href="https://github.com/Ebad018" target="_blank" class="btn btn-outline">GitHub</a>
         </div>
       </nav>
@@ -382,15 +501,22 @@
 
   <main>
     <!-- Hero Section -->
-    <section class="hero container">
+    <section class="hero">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="container">
       <span class="hero-tagline">Architecting Systems, Building Worlds</span>
-      <h1>Software Engineer <br/><span style="color:var(--text-muted)">&</span> Game Developer</h1>
+      <h1>Software Engineer <br/><span style="color:var(--text-muted)">&</span> <span class="grad-accent">Game Developer</span></h1>
       <p>
-        Full Stack .NET Developer and Game Developer with over 5 years of experience delivering robust desktop, web, embedded solutions, and interactive games. Extensive expertise spanning <strong>Unity/C#, C++, .NET Core</strong>, and <strong>Embedded IoT systems</strong>.
+        Software engineer and game developer with 5+ years of experience shipping desktop, web, and embedded solutions — currently leading game development at <strong>Gamucatex</strong>. Deep expertise across <strong>Unity/C#, C++, .NET Core</strong>, and <strong>Embedded IoT systems</strong>.
       </p>
       <div class="hero-actions">
         <a href="#projects" class="btn">View My Work</a>
         <a href="mailto:ibadullah.k81@gmail.com" class="btn btn-outline">Contact Me</a>
+      </div>
+      <div class="hero-meta">
+        <span class="status-dot"></span> Open to opportunities
+        <span aria-hidden="true">&bull;</span> Stockholm, Sweden
+      </div>
       </div>
     </section>
 
@@ -408,7 +534,7 @@
               <h3 style="margin-bottom: 0;">FERP (Fuel Station ERP)</h3>
               <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/FERP1.png', 'assets/FERP2.png'])">View Screenshots</button>
             </div>
-            <p><strong>Role: Sole Developer</strong> &bull; A highly specialized, offline-first Enterprise Resource Planning (ERP) SaaS platform built explicitly for fuel station businesses targeting Pakistan, developed on custom request from a fuel station owner.</p>
+            <p><strong>Role: Sole Developer</strong> &bull; An offline-first Enterprise Resource Planning (ERP) SaaS platform for fuel station businesses in Pakistan, commissioned by a fuel station owner and built end-to-end — from the multi-tenant backend to the desktop client.</p>
             
             <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
               <strong style="color: #93c5fd;">Engineering Highlights:</strong>
@@ -440,7 +566,7 @@
               <h3 style="margin-bottom: 0;">Hands of the End <span title="This project is under construction." style="font-size: 0.5em; color: var(--text-muted); vertical-align: middle; cursor: help;">(WIP)</span></h3>
               <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/Hands of the end.png', 'assets/Hands of the end (2).png', 'assets/Hands of the End (3).png', 'assets/Hands of the end (4).png'])">View Screenshots</button>
             </div>
-            <p><strong>Role: Sole Developer</strong> &bull; A Roguelike / Vampire Survival Game where you, as a Mage, are chosen as the Guardian of a village—the last civilization remaining. Designed, coded, and crafted solo with an impressive blend of 2D pixel art and 3D worlds.</p>
+            <p><strong>Role: Sole Developer</strong> &bull; A first-person magic-casting roguelike / survivors game where you, as a Mage, defend the last village of a dying world. Designed, coded, and illustrated solo — blending 2D pixel art with fully 3D worlds.</p>
             
             <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
               <strong style="color: #d8b4fe;">Engineering Highlights:</strong>
@@ -479,7 +605,7 @@
               <h3 style="margin-bottom: 0;">Red Bread Repossession</h3>
               <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/RedBreadMenu.mp4', 'assets/Red Bread Repo (2).png', 'assets/Red Bread Repo (3).png'])">View Screenshots</button>
             </div>
-            <p><strong>Role: Sole Developer</strong> &bull; A robust, multiplayer-ready 3rd person shooter featuring advanced server-client architecture. Built with Unity Netcode for GameObjects and Unity Gaming Services for seamless matchmaking and Relay NAT punch-through.</p>
+            <p><strong>Role: Sole Developer</strong> &bull; A multiplayer third-person shooter built on an authoritative client-server architecture, using Unity Netcode for GameObjects and Unity Gaming Services for matchmaking and Relay NAT punch-through.</p>
 
             <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
               <strong style="color: #fca5a5;">Engineering Highlights:</strong>
@@ -517,7 +643,7 @@
               <h3 style="margin-bottom: 0;">Project Pharaoh <span title="This project is under construction." style="font-size: 0.5em; color: var(--text-muted); vertical-align: middle; cursor: help;">(WIP)</span></h3>
               <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/Project Pharaoh.png', 'assets/Project Pharaoh 2.png'])">View Screenshots</button>
             </div>
-            <p><strong>Role: Sole Developer</strong> &bull; A Tower Defense game with Building Mechanics utilizing ECS and DOTS to implement large amounts of AI and enemies. When the base is overrun, the player needs to extract, and can then use those resources to unlock new tech (RogueLite progression).</p>
+            <p><strong>Role: Sole Developer</strong> &bull; A tower-defense / base-building hybrid using Unity ECS (DOTS) to simulate massive enemy hordes. When the base is overrun, the player extracts and spends salvaged resources on new tech — a roguelite progression loop.</p>
 
             <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
               <strong style="color: #fcd34d;">Engineering Highlights:</strong>
@@ -529,8 +655,9 @@
             </div>
 
             <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">Unity ECS / DOTS</span>
               <span class="chip">Procedural Generation</span>
-              <span class="chip">First-Person</span>
+              <span class="chip">Editor Tooling</span>
               <span class="chip">Resource Systems</span>
             </div>
           </div>
@@ -554,7 +681,7 @@
               <h3 style="margin-bottom: 0;">Whack-A-Mole</h3>
               <a href="https://ebad018.itch.io/wackamole" target="_blank" class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;">Play on Itch.io</a>
             </div>
-            <p><strong>Role: Sole Developer</strong> &bull; A feature-rich 2D Whack-A-Mole game built in Unity. Demonstrates strong software engineering practices with a decoupled architecture.</p>
+            <p><strong>Role: Sole Developer</strong> &bull; A 2D arcade game treated like production software — fully decoupled, event-driven architecture with dynamic difficulty scaling. Playable in the browser.</p>
 
             <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
               <strong style="color: #6ee7b7;">Engineering Highlights:</strong>
@@ -583,7 +710,7 @@
         <!-- Minor Project: SmolTheftAuto -->
         <article class="card">
           <h3>SmolTheftAuto</h3>
-          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;"><strong>My contributions:</strong> Engineered a core vehicle system with a physics-based movement controller and player entry/exit mechanics, featuring modular seat interactions and NPC persistence.</p>
+          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;"><strong>Role: Team Project</strong> &bull; A GTA-style game built in Unity. I engineered the core vehicle system: a physics-based movement controller, player entry/exit mechanics, modular seat interactions, and NPC persistence.</p>
           <div class="chip-stack"><span class="chip">Unity</span><span class="chip">Vehicle Physics</span><span class="chip">NPC Logic</span></div>
         </article>
         
@@ -597,7 +724,7 @@
         <!-- Minor Project: CFS -->
         <article class="card">
           <h3>Cultivation Fortress Sim <span title="This project is under construction." style="font-size: 0.6em; color: var(--text-muted); vertical-align: middle; cursor: help;">(WIP)</span></h3>
-          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;"><strong>Role: Sole Developer</strong> &bull; A Dwarf Fortress inspired Cultivation/Martial arts management game built in C++. Architected robust and scalable initial management systems natively.</p>
+          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;"><strong>Role: Sole Developer</strong> &bull; A Dwarf Fortress-inspired cultivation / martial arts management sim, written from scratch in C++ with no engine — core simulation and management systems already in place.</p>
           <div class="chip-stack"><span class="chip">C++</span><span class="chip">Simulation Systems</span></div>
         </article>
       </div>
@@ -732,12 +859,27 @@
       </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="container section">
+      <div class="card" style="text-align: center; padding: 64px 32px;">
+        <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;">Let's Build Something</h2>
+        <p style="color: var(--text-muted); font-size: 18px; max-width: 640px; margin: 0 auto 32px;">
+          I'm open to software engineering and game development roles, as well as freelance projects. If my work looks like a fit for your team, I'd love to hear from you.
+        </p>
+        <div class="hero-actions" style="flex-wrap: wrap;">
+          <a href="mailto:ibadullah.k81@gmail.com" class="btn">ibadullah.k81@gmail.com</a>
+          <a href="https://github.com/Ebad018" target="_blank" class="btn btn-outline">GitHub</a>
+          <a href="https://ebad018.itch.io" target="_blank" class="btn btn-outline">Itch.io</a>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
     <div class="container">
-      <p style="margin-bottom: 8px;"><strong>Ibad Ullah</strong> — Sweden, Stockholm</p>
-      <p>© <span id="y"></span> built with pristine web standards.</p>
+      <p style="margin-bottom: 8px;"><strong>Ibad Ullah</strong> — Stockholm, Sweden</p>
+      <p>© <span id="y"></span> Ibad Ullah. Designed & built from scratch — no frameworks, no templates.</p>
     </div>
   </footer>
 
@@ -749,52 +891,49 @@
     window.currentGalleryMedia = [];
     window.currentGalleryIndex = 0;
 
-    function openGallery(mediaList) {
-      window.currentGalleryMedia = mediaList;
-      const modal = document.getElementById('imageModal');
+    function setGalleryMedia(idx) {
       const mainImg = document.getElementById('modalImg');
       const mainVid = document.getElementById('modalVid');
       const gallery = document.getElementById('modalGallery');
-      
-      const setMainMedia = (src, idx) => {
-        window.currentGalleryIndex = idx;
-        if (src.endsWith('.mp4') || src.endsWith('.webm')) {
-          mainImg.style.display = 'none';
-          if (mainVid) {
-            mainVid.style.display = 'block';
-            mainVid.src = src;
-            mainVid.play();
-          }
-        } else {
-          if (mainVid) {
-            mainVid.style.display = 'none';
-            mainVid.pause();
-          }
-          mainImg.style.display = 'block';
-          mainImg.src = src;
-        }
-      };
+      const src = window.currentGalleryMedia[idx];
+      window.currentGalleryIndex = idx;
 
-      mainImg.onclick = function(e) {
-        if (window.currentGalleryMedia.length <= 1) return;
-        const rect = mainImg.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        let index = window.currentGalleryIndex;
-        if (x > rect.width / 2) {
-          index = (index + 1) % window.currentGalleryMedia.length;
-        } else {
-          index = (index - 1 + window.currentGalleryMedia.length) % window.currentGalleryMedia.length;
-        }
-        setMainMedia(window.currentGalleryMedia[index], index);
-        document.querySelectorAll('.gallery-thumbs img, .gallery-thumbs video').forEach(i => i.classList.remove('active'));
-        if (gallery.children[index]) gallery.children[index].classList.add('active');
-      };
-      
-      mainImg.style.cursor = 'pointer';
+      if (src.endsWith('.mp4') || src.endsWith('.webm')) {
+        mainImg.style.display = 'none';
+        mainVid.style.display = 'block';
+        mainVid.src = src;
+        mainVid.play();
+      } else {
+        mainVid.style.display = 'none';
+        mainVid.pause();
+        mainImg.style.display = 'block';
+        mainImg.src = src;
+      }
 
-      setMainMedia(mediaList[0], 0);
+      [...gallery.children].forEach((t, i) => t.classList.toggle('active', i === idx));
+    }
+
+    function stepGallery(dir) {
+      const len = window.currentGalleryMedia.length;
+      if (len <= 1) return;
+      setGalleryMedia((window.currentGalleryIndex + dir + len) % len);
+    }
+
+    function closeGallery() {
+      document.getElementById('imageModal').style.display = 'none';
+      document.getElementById('modalVid').pause();
+    }
+
+    function openGallery(mediaList) {
+      window.currentGalleryMedia = mediaList;
+      const modal = document.getElementById('imageModal');
+      const gallery = document.getElementById('modalGallery');
+      const multi = mediaList.length > 1;
+
+      document.getElementById('galleryPrev').style.display = multi ? 'flex' : 'none';
+      document.getElementById('galleryNext').style.display = multi ? 'flex' : 'none';
+
       gallery.innerHTML = '';
-      
       mediaList.forEach((src, idx) => {
         let thumb;
         if (src.endsWith('.mp4') || src.endsWith('.webm')) {
@@ -805,22 +944,152 @@
           thumb = document.createElement('img');
           thumb.src = src;
         }
-        
+
         thumb.style.height = '80px';
         thumb.style.cursor = 'pointer';
         thumb.style.borderRadius = '8px';
         thumb.style.border = '2px solid transparent';
-        if(idx === 0) thumb.classList.add('active');
-        
-        thumb.onclick = () => { 
-          setMainMedia(src, idx);
-          document.querySelectorAll('.gallery-thumbs img, .gallery-thumbs video').forEach(i => i.classList.remove('active'));
-          thumb.classList.add('active');
-        };
+
+        thumb.onclick = () => setGalleryMedia(idx);
         gallery.appendChild(thumb);
       });
+
+      setGalleryMedia(0);
       modal.style.display = 'flex';
     }
+
+    document.getElementById('galleryPrev').onclick = () => stepGallery(-1);
+    document.getElementById('galleryNext').onclick = () => stepGallery(1);
+    document.getElementById('modalImg').onclick = () => stepGallery(1);
+    document.getElementById('modalImg').style.cursor = 'pointer';
+
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('imageModal').style.display !== 'flex') return;
+      if (e.key === 'Escape') closeGallery();
+      if (e.key === 'ArrowRight') stepGallery(1);
+      if (e.key === 'ArrowLeft') stepGallery(-1);
+    });
+
+    // Scroll Reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.project-grid > .card, .grid-3 > .card, #experience .card, #skills .card, #contact .card').forEach(el => {
+      el.classList.add('reveal');
+      revealObserver.observe(el);
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+    });
+
+    // Hero particle constellation
+    (() => {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const mouse = { x: null, y: null };
+      let w, h, particles = [];
+
+      function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        w = rect.width;
+        h = rect.height;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = Math.min(90, Math.floor(w * h / 16000));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.6 + 0.6
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+
+          // gentle push away from the cursor
+          if (mouse.x !== null) {
+            const dx = p.x - mouse.x, dy = p.y - mouse.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < 14400 && d2 > 0.01) {
+              const d = Math.sqrt(d2);
+              p.x += (dx / d) * 0.5;
+              p.y += (dy / d) * 0.5;
+            }
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(125, 211, 252, 0.55)';
+          ctx.fill();
+        }
+
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i], b = particles[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < 16900) {
+              ctx.strokeStyle = `rgba(139, 92, 246, ${(1 - Math.sqrt(d2) / 130) * 0.18})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        if (mouse.x !== null) {
+          for (const p of particles) {
+            const dx = p.x - mouse.x, dy = p.y - mouse.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < 25600) {
+              ctx.strokeStyle = `rgba(125, 211, 252, ${(1 - Math.sqrt(d2) / 160) * 0.3})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function loop() {
+        draw();
+        requestAnimationFrame(loop);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+      canvas.parentElement.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      canvas.parentElement.addEventListener('mouseleave', () => { mouse.x = mouse.y = null; });
+
+      if (reducedMotion) draw(); else loop();
+    })();
 
     // Whack-A-Mole Animation
     const moleFrames = [

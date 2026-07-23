@@ -597,6 +597,68 @@
           </div>
         </article>
 
+        <!-- Project 1.25: GyroSports -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #f43f5e; color: #fb7185; background: rgba(244, 63, 94, 0.1);">Unity / Android / Networking</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <h3 style="margin-bottom: 0;">GyroSports</h3>
+              <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/GyroSports(Strike).mp4', 'assets/GyroSports(Swing).mp4', 'assets/GyroSports(ball).png', 'assets/GyroSports(Pins).png'])">View Media</button>
+            </div>
+            <p><strong>Role: Sole Developer</strong> &bull; An asymmetrical cross-platform multiplayer game. The PC handles the heavy 3D simulation while your Android phone acts as a wireless motion controller, similar to Wii Sports.</p>
+
+            <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
+              <strong style="color: #fb7185;">Engineering Highlights:</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 0;">
+                <li><strong>Architecture:</strong> Engineered a decoupled, asymmetrical architecture where the PC client runs the physics simulation while Android devices function purely as lightweight wireless motion controllers.</li>
+                <li><strong>Networking:</strong> Delivered highly responsive, low-latency gameplay—supporting both multi-device connections and single-device "pass and play" modes—by writing a custom, lightweight UDP networking protocol in C#.</li>
+                <li><strong>Sensors:</strong> Translated physical motion into precise in-game actions by directly reading and interpolating Android Gyroscope and Accelerometer sensor data to calculate swing velocity, aim, and wrist-twist spin.</li>
+              </ul>
+            </div>
+
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">Unity</span>
+              <span class="chip">C#</span>
+              <span class="chip">Android Sensors</span>
+              <span class="chip">UDP Sockets</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(244, 63, 94, 0.1), transparent 70%); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px;">
+            <video src="assets/GyroSports(Strike).mp4" autoplay loop muted style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;"></video>
+          </div>
+        </article>
+
+        <!-- Project 1.5: Fred's Escape -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #38bdf8; color: #7dd3fc; background: rgba(56, 189, 248, 0.1);">Unreal Engine / C++</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <h3 style="margin-bottom: 0;">Fred's Escape</h3>
+              <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/Fred\'s Escape(Main View).mp4', 'assets/Fred\'s Escape(Rotation Puzzle).mp4', 'assets/Fred\'s Escape(Keypad puzzle).mp4'])">View Gameplay</button>
+            </div>
+            <p><strong>Role: C++ Programmer (Group Project)</strong> &bull; A 3D Escape Room game where the protagonist, Fred, is trapped in a toy store. I engineered the core reusable puzzle logic and object interaction framework.</p>
+
+            <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
+              <strong style="color: #7dd3fc;">Engineering Highlights:</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 0;">
+                <li><strong>Architecture:</strong> Maintained stable and extensible game logic across multiple levels by engineering a scalable Puzzle State Machine that handles dynamic dependencies using Object-Oriented C++ and Unreal's Delegate event system.</li>
+                <li><strong>Systems:</strong> Enabled rapid puzzle creation for level designers by developing modular, drag-and-drop puzzle logic—specifically Keypad systems and Rotatable Object frameworks—exposed through generic C++ base classes.</li>
+                <li><strong>Integration:</strong> Seamlessly connected player actions to puzzle states, ensuring reliable gameplay progression, by hooking into existing interaction frameworks to precisely detect 3D actor rotations and keypad digit inputs.</li>
+              </ul>
+            </div>
+
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">Unreal Engine</span>
+              <span class="chip">C++</span>
+              <span class="chip">State Machines</span>
+              <span class="chip">Game Systems</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(56, 189, 248, 0.1), transparent 70%); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px;">
+            <video src="assets/Fred's Escape(Main View).mp4" autoplay loop muted style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;"></video>
+          </div>
+        </article>
+
         <!-- Project 2: Red Bread Repo -->
         <article class="card project-card">
           <div class="project-content">

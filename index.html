@@ -557,7 +557,42 @@
             <img src="assets/FERP1.png" alt="FERP Dashboard" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
           </div>
         </article>
-        
+
+        <!-- Project 0.5: Cultivation Fortress Sim -->
+        <article class="card project-card">
+          <div class="project-content">
+            <span class="hero-tagline" style="font-size: 12px; margin-bottom: 12px; border-color: #eab308; color: #fde047; background: rgba(234, 179, 8, 0.1);">C++20 / Custom Engine / No Framework</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+              <h3 style="margin-bottom: 0;">Cultivation Fortress Sim <span title="This project is under active construction." style="font-size: 0.5em; color: var(--text-muted); vertical-align: middle; cursor: help;">(WIP)</span></h3>
+              <button class="btn btn-outline" style="font-size: inherit; padding: 4px 16px; margin-top: 0; display: flex; align-items: center;" onclick="openGallery(['assets/CFS_Worldgen.png', 'assets/CFS_WorldMap.png', 'assets/CFS_Fortress.png', 'assets/CFS_Underground.png', 'assets/CFS_BookUI.png'])">View Screenshots</button>
+            </div>
+            <p><strong>Role: Sole Developer</strong> &bull; A Dwarf Fortress-inspired cultivation / martial-arts colony sim, written from scratch in modern C++20 with <em>no game engine</em> — SFML is used only for a window and pixels. Every simulation, generation, and UI system is hand-built and architected under strict SOLID principles (no God classes).</p>
+
+            <div style="font-size: 14.5px; color: var(--text-muted); margin: 20px 0; line-height: 1.5;">
+              <strong style="color: #fde047;">Engineering Highlights:</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 0;">
+                <li><strong>Engine Architecture:</strong> Kept a 30k-line simulation maintainable and testable by decomposing it into a single authoritative <code>World</code> state driven by ~40 single-responsibility systems (<code>CultivationSystem</code>, <code>PawnSystem</code>, A* <code>PathSystem</code>, <code>SiegeSystem</code>) behind one <code>SimEngine</code> facade — keeping the SFML/ImGui front-end fully decoupled from a header-only, engine-agnostic core.</li>
+                <li><strong>Procedural Generation:</strong> Generated an endlessly varied, believable world by chaining a multi-pass pipeline — Perlin/FBM elevation &rarr; river carving &rarr; spirit-vein seeding &rarr; adjacency-ruled biomes &rarr; irregular corruption fronts — then folding it into a two-layer (surface + underground z-level) tile grid threaded with minable qi veins.</li>
+                <li><strong>Emergent History Sim:</strong> Produced Dwarf-Fortress-style living lore by simulating a century of pre-history before play begins — birthing 75+ historical figures who forge grudges, break through cultivation realms, and forge named artifacts across ~500 recorded events that the player later inhabits.</li>
+                <li><strong>Data-Driven Content:</strong> Turned design documents into the live game database by authoring all content (beasts, weapons, arts, resources, events) as human-readable data tables and writing a custom parser that ingests those tables directly into typed C++ objects at startup — one source of truth shared by writer and engine.</li>
+                <li><strong>Tooling &amp; Workflow:</strong> Enabled fast, verifiable iteration on a headless-friendly build by engineering a CMake/VS2022 toolchain and a screenshot-based self-test harness that boots the game, drives scripted scenarios, and dumps annotated PNGs for automated visual regression checks.</li>
+              </ul>
+            </div>
+
+            <div class="chip-stack" style="margin-top: 24px;">
+              <span class="chip">C++20</span>
+              <span class="chip">SFML / Dear ImGui</span>
+              <span class="chip">Procedural Generation</span>
+              <span class="chip">SOLID Architecture</span>
+              <span class="chip">A* Pathfinding</span>
+              <span class="chip">CMake</span>
+            </div>
+          </div>
+          <div class="project-model" style="background: radial-gradient(circle at center, rgba(234, 179, 8, 0.12), transparent 70%); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px;">
+            <img src="assets/CFS_Worldgen.png" alt="Cultivation Fortress Sim — procedural world generation and history simulation" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain; image-rendering: pixelated;">
+          </div>
+        </article>
+
         <!-- Project 1: Hands of the End -->
         <article class="card project-card">
           <div class="project-content">
@@ -782,13 +817,6 @@
           <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;"><strong>Role: Sole Developer</strong> &bull; A 2D Geometric Shapes Art styled game built with C++ and RayLib. Focuses heavily on strict Game Design Patterns (Factory Pattern, Object Pooling, Observers).</p>
           <div class="chip-stack"><span class="chip">C++</span><span class="chip">RayLib</span><span class="chip">Design Patterns</span></div>
         </article>
-
-        <!-- Minor Project: CFS -->
-        <article class="card">
-          <h3>Cultivation Fortress Sim <span title="This project is under construction." style="font-size: 0.6em; color: var(--text-muted); vertical-align: middle; cursor: help;">(WIP)</span></h3>
-          <p style="color:var(--text-muted); font-size:15px; margin: 12px 0 20px;"><strong>Role: Sole Developer</strong> &bull; A Dwarf Fortress-inspired cultivation / martial arts management sim, written from scratch in C++ with no engine — core simulation and management systems already in place.</p>
-          <div class="chip-stack"><span class="chip">C++</span><span class="chip">Simulation Systems</span></div>
-        </article>
       </div>
     </section>
 
@@ -800,7 +828,7 @@
           
           <div class="timeline-item">
             <div class="timeline-node"></div>
-            <h3>Vice Lead Game Developer</h3>
+            <h3>Vice Lead Game Developer <span style="font-size: 0.6em; color: var(--text-muted); font-weight: 500;">(Part-time)</span></h3>
             <div class="meta">Gamucatex — Denmark (Remote) | Jun 2026 – Present</div>
             <ul>
               <li>Leading development on the Tectonicus Project, orchestrating a team of developers and mentoring interns.</li>

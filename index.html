@@ -115,7 +115,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
     .eq span:nth-child(4) { animation-delay: .75s }
     @keyframes eq { 0%, 100% { height: 4px } 50% { height: 16px } }
     @media (max-width: 760px) {
-      .player { padding: 8px 12px; gap: 8px; }
+      .player { padding: 8px 12px; gap: 8px; animation: none; } /* no drop-in on mobile: it starts collapsed */
       #pVol { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -274,16 +274,21 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
       #hero .dot { animation: none; }
     }
     @media (max-width: 900px) {
-      .frame { padding: 96px 20px 96px; }
-      .credit-grid { grid-template-columns: 1fr; }
+      .frame, #hero, #contact { padding: 96px 20px 96px; flex-direction: column; align-items: stretch; justify-content: flex-end; }
+      .credit-grid { grid-template-columns: 1fr !important; max-width: none !important; }
       .inset { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 26px; transform: none; }
       .frame.on .inset { transform: none; }
       #hero .who { position: static; text-align: left; margin-bottom: 18px; order: -1; }
-      #mole .sprite { position: relative; right: auto; bottom: auto; margin-top: 24px; width: 46vw; }
+      #mole .sprite { position: relative; right: auto; bottom: auto; margin-top: 24px; width: 46vw; align-self: flex-start; }
       .work-row { grid-template-columns: 1fr; gap: 6px; }
       .xp-row { grid-template-columns: 1fr; gap: 6px; }
       .chrome-top { padding: 14px 20px; }
       .timeline { padding: 12px 20px 14px; }
+    }
+    @media (max-width: 600px) {
+      .frame h1, .frame h2 { font-size: clamp(1.9rem, 10vw, 2.6rem); overflow-wrap: anywhere; max-width: none; }
+      .logline { font-size: 15px; }
+      .tl-label:first-child { display: none; } /* keep the counter, drop the frame name on tiny screens */
     }
   </style>
 </head>
@@ -818,12 +823,16 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
 
     // collapse / expand the docked player
     const pToggle = document.getElementById('pToggle');
-    pToggle.onclick = () => {
-      const collapsed = pPlayer.classList.toggle('collapsed');
+    function setCollapsed(collapsed) {
+      pPlayer.classList.toggle('collapsed', collapsed);
       pToggle.innerHTML = collapsed ? '&#9660;' : '&#9650;';
       pToggle.setAttribute('aria-label', collapsed ? 'Show music player' : 'Hide music player');
       pToggle.setAttribute('aria-expanded', String(!collapsed));
-    };
+    }
+    pToggle.onclick = () => setCollapsed(!pPlayer.classList.contains('collapsed'));
+
+    // on small screens the card would cover the nav, so it starts tucked up with only the arrow tab showing
+    if (matchMedia('(max-width: 760px)').matches) setCollapsed(true);
 
     // mole sprite
     const moleFrames = ['assets/empty hole.png','assets/Miss.png','assets/Hitable.png','assets/Miss.png','assets/empty hole.png'];

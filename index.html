@@ -290,6 +290,31 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
       .logline { font-size: 15px; }
       .tl-label:first-child { display: none; } /* keep the counter, drop the frame name on tiny screens */
     }
+
+    /* ── lightbox nav ── */
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(10,10,13,.72); border: 1px solid rgba(245,245,246,.28);
+      color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+    .lb-nav:hover { background: rgba(10,10,13,.95); border-color: var(--ink); }
+    .lb-nav.prev { left: 3vw; }
+    .lb-nav.next { right: 3vw; }
+    .lb-nav.prev:hover { transform: translateY(-50%) translateX(-3px); }
+    .lb-nav.next:hover { transform: translateY(-50%) translateX(3px); }
+    #lb-count {
+      position: absolute; bottom: 56px; left: 0; right: 0; text-align: center;
+      font-size: 12px; font-weight: 700; letter-spacing: .18em;
+      color: rgba(245,245,246,.62); font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 760px) {
+      .lb-nav { width: 42px; height: 42px; font-size: 17px; }
+      .lb-nav.prev { left: 8px; }
+      .lb-nav.next { right: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -357,7 +382,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
           <div class="credit-cell"><b>Systems</b><span>Delivered highly responsive enemy combat mechanics, demonstrated by perfectly synchronized attack animations, by coupling NavMeshAgent pathfinding to Animator controllers using precision Animation Events.</span></div>
         </div>
         <div class="frame-meta rv">
-          <button class="btn" onclick="openShots(0)">Screenshots</button>
+          <button class="btn" onclick="openShots(0)">Enter the village</button>
           <span class="role-tag">Unity · C# · Shader Graph · <em>Pixel Art</em></span>
         </div>
       </div>
@@ -395,7 +420,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
           <div class="credit-cell"><b>Integration</b><span>Seamlessly connected player actions to puzzle states, ensuring reliable gameplay progression, by hooking into existing interaction frameworks to precisely detect 3D actor rotations and keypad digit inputs.</span></div>
         </div>
         <div class="frame-meta rv">
-          <button class="btn" onclick="openShots(5)">Watch gameplay</button>
+          <button class="btn" onclick="openShots(5)">Watch the escape</button>
           <span class="role-tag">Unreal · C++ · <em>State Machines</em></span>
         </div>
       </div>
@@ -414,7 +439,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
           <div class="credit-cell"><b>Systems</b><span>Optimized network traffic and decoupled lobby UI architecture, minimizing bandwidth usage, by implementing lightweight struct-based network payloads and Scriptable Object Event Channels.</span></div>
         </div>
         <div class="frame-meta rv">
-          <button class="btn" onclick="openShots(1)">Menu reel + shots</button>
+          <button class="btn" onclick="openShots(1)">Watch the showdown</button>
           <span class="role-tag">NGO · Relay · <em>Client Prediction</em></span>
         </div>
       </div>
@@ -433,7 +458,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
           <div class="credit-cell"><b>Systems</b><span>Generated infinite, diverse game worlds, creating unique tactical scenarios per playthrough, by engineering multi-pass procedural math algorithms mapping Perlin noise to dynamic biomes and river paths.</span></div>
         </div>
         <div class="frame-meta rv">
-          <button class="btn" onclick="openShots(2)">Screenshots</button>
+          <button class="btn" onclick="openShots(2)">See the horde</button>
           <span class="role-tag">ECS / DOTS · <em>Procedural Generation</em></span>
         </div>
       </div>
@@ -462,8 +487,8 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
 
     <!-- ═══ FRAME 4 — FERP ═══ -->
     <section class="frame" id="ferp" data-name="FERP">
-      <div class="frame-bg"><img src="assets/FERP2.png" alt="" style="filter: blur(6px) brightness(.7)"></div>
-      <div class="inset"><img src="assets/FERP1.png" alt="FERP accounting dashboard"></div>
+      <div class="frame-bg"><img src="assets/FERP-inventory.png" alt="" style="filter: blur(6px) brightness(.7)"></div>
+      <div class="inset"><img src="assets/FERP-dashboard.png" alt="FERP station dashboard showing litres sold, cash taken and fuel variance"></div>
       <div class="credit">
         <div class="kick rv">React · Electron · Commissioned</div>
         <h2 class="display rv">FERP</h2>
@@ -474,7 +499,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
           <div class="credit-cell"><b>Algorithms</b><span>Automated exact fuel volume calculations and double-entry accounting, eliminating manual errors and flagging potential theft, by developing precise tank calibration algorithms and shift balancing routines.</span></div>
         </div>
         <div class="frame-meta rv">
-          <button class="btn" onclick="openShots(3)">See the product</button>
+          <button class="btn" onclick="openShots(3)">See it running</button>
           <span class="role-tag">React &amp; TS · Electron · <em>PostgreSQL</em></span>
         </div>
       </div>
@@ -633,6 +658,9 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
     <button onclick="closeShots()" aria-label="Close" style="position:absolute; top:20px; right:26px; background:none; border:none; color:#fff; font-size:34px; cursor:pointer">&times;</button>
     <img id="lb-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:92%; max-height:82vh; border-radius:6px; display:none" alt="Project screenshot">
     <video id="lb-vid" controls loop muted style="max-width:92%; max-height:82vh; border-radius:6px; display:none"></video>
+    <button class="lb-nav prev" onclick="stepShots(-1)" aria-label="Previous">&#10094;</button>
+    <button class="lb-nav next" onclick="stepShots(1)" aria-label="Next">&#10095;</button>
+    <div id="lb-count"></div>
     <div id="lb-dots" style="position:absolute; bottom:28px; left:0; right:0; display:flex; gap:10px; justify-content:center"></div>
   </div>
 
@@ -847,13 +875,15 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
       ['assets/Hands of the end.png','assets/Hands of the end (2).png','assets/Hands of the End (3).png','assets/Hands of the end (4).png'],
       ['assets/RedBreadMenu.mp4','assets/Red Bread Repo (2).png','assets/Red Bread Repo (3).png'],
       ['assets/Project Pharaoh.png','assets/Project Pharaoh 2.png'],
-      ['assets/FERP1.png','assets/FERP2.png'],
+      ['assets/FERP-dashboard.png','assets/FERP-variance.png','assets/FERP-inventory.png','assets/FERP-accounting.png','assets/FERP-trial-balance.png','assets/FERP-analytics.png'],
       ['assets/GyroSports(Strike).mp4','assets/GyroSports(Swing).mp4','assets/GyroSports(ball).png','assets/GyroSports(Pins).png'],
       ["assets/Fred's Escape(Main View).mp4","assets/Fred's Escape(Rotation Puzzle).mp4","assets/Fred's Escape(Keypad puzzle).mp4"],
       ['assets/CFS_Worldgen.png','assets/CFS_WorldMap.png','assets/CFS_Fortress.png','assets/CFS_Underground.png','assets/CFS_BookUI.png']
     ];
     let curGal = 0, curIdx = 0;
     const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img'), lbVid = document.getElementById('lb-vid'), lbDots = document.getElementById('lb-dots');
+    const lbCount = document.getElementById('lb-count'), lbPrev = document.querySelector('.lb-nav.prev'), lbNext = document.querySelector('.lb-nav.next');
+    const stepShots = d => showMedia((curIdx + d + galleries[curGal].length) % galleries[curGal].length);
     function showMedia(i) {
       curIdx = i;
       const src = galleries[curGal][i];
@@ -862,6 +892,7 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
       lbVid.style.display = isVid ? 'block' : 'none';
       if (isVid) { lbVid.src = src; lbVid.play().catch(()=>{}); } else { lbVid.pause(); lbImg.src = src; }
       [...lbDots.children].forEach((d, j) => d.style.background = j === i ? '#fff' : 'rgba(255,255,255,.3)');
+      lbCount.textContent = (i + 1) + ' / ' + galleries[curGal].length;
     }
     function openShots(g) {
       curGal = g;
@@ -872,6 +903,9 @@ FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; t
         d.onclick = () => showMedia(i);
         lbDots.appendChild(d);
       });
+      const multi = galleries[g].length > 1;
+      lbPrev.style.display = lbNext.style.display = multi ? 'flex' : 'none';
+      lbCount.style.display = multi ? 'block' : 'none';
       showMedia(0);
       lb.style.display = 'flex';
     }

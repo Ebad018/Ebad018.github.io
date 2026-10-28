@@ -104,8 +104,8 @@ FORM: Equipment datasheet; staging: index table into per-system spec blocks.
 
   /* ── system spec blocks ── */
   .sys{
-    display:grid;grid-template-columns:52px 1fr 300px;
-    gap:0 26px;padding:26px 0;border-bottom:1px solid var(--rule);
+    display:grid;grid-template-columns:48px minmax(0,1fr) minmax(0,420px);
+    gap:0 32px;padding:34px 0;border-bottom:1px solid var(--rule);
     align-items:start;
   }
   .sys:hover{background:rgba(212,82,31,.028)}
@@ -134,6 +134,12 @@ FORM: Equipment datasheet; staging: index table into per-system spec blocks.
   .side img{
     width:100%;display:block;border:1px solid var(--rule-dark);
     background:#0c1222;
+    box-shadow:0 14px 30px -14px rgba(22,24,29,.45);
+    transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s ease;
+  }
+  .sys:hover .side img{
+    transform:translateY(-3px);
+    box-shadow:0 22px 44px -16px rgba(22,24,29,.55);
   }
   .side .shotcap{
     margin-top:7px;font-size:11px;color:var(--soft);
@@ -276,8 +282,10 @@ FORM: Equipment datasheet; staging: index table into per-system spec blocks.
         <span class="repo closed">Private &mdash; Sabro-Tech org</span>
       </div>
       <div class="side">
-        <img src="assets/ac-debugger.png" alt="Live serial telemetry from an Elios geyser unit: temperatures, BTU, compressor RPM, pressures and an active-fault summary">
-        <div class="shotcap"><span>Live serial output</span><span class="mono">ESP32 &middot; WS</span></div>
+        <img src="assets/ac-debugger-ui.png" alt="AC Debugger dashboard showing temperature and pressure sensor panels, compressor RPM, voltage and current readouts, and system controls">
+        <div class="shotcap"><span>Debugger dashboard</span><span class="mono">ESP32 &middot; WS</span></div>
+        <img src="assets/ac-debugger.png" alt="Raw serial telemetry captured from a unit: temperatures, pressures and an active-fault summary" style="margin-top:16px">
+        <div class="shotcap"><span>Raw serial capture</span><span class="mono">live</span></div>
       </div>
     </article>
 
@@ -298,7 +306,10 @@ FORM: Equipment datasheet; staging: index table into per-system spec blocks.
         <div class="stack-list"><span>C#</span><span>.NET 6</span><span>ESP32</span><span>WebSocket</span><span>OTA</span></div>
         <a class="repo" href="https://github.com/Sabro-Tech/Serial-Diagnostic-And-OTA" target="_blank" rel="noopener">View source &nearr;</a>
       </div>
-      <div class="side"></div>
+      <div class="side">
+        <img src="assets/serial-diagnostic.png" alt="Serial Monitor dashboard with geyser, ambient and discharge temperature gauges, a pressure trace and compressor status tiles">
+        <div class="shotcap"><span>Serial Monitor</span><span class="mono">.NET 6</span></div>
+      </div>
     </article>
 
     <!-- 03 HVAC Lab -->

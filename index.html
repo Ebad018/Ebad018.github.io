@@ -2,216 +2,252 @@
 <html lang="en">
 <head>
 <!--
-THESIS: One person, two disciplines. The landing page is a fork, not a homepage — it asks which Ibad you came
-for and gets out of the way. Refuses a summary hero that would make the visitor read a pitch before choosing.
-OWN-WORLD: Two full-height panels meeting on a hairline seam. Left carries the engineering world's warm paper
-and safety orange; right carries the reel's near-black and violet. Hovering commits a panel: it takes more of
-the screen and the other recedes.
-STORY: A visitor lands, sees two honest doors with enough evidence to pick, and is inside the right portfolio
-in one click.
-FIRST VIEWPORT: The split itself. Name on the seam. Two panels, each with discipline, one line of proof, and
-a list of what is inside.
-FORM: Diptych / split door; staging: hover-weighted panels, seam as spine.
+THESIS: One portfolio in two acts, opened by a title card. The page behaves like the first frame of a film —
+footage running behind, the name set as a title, and two lettered entries low on the frame. Refuses the
+50/50 door-picker, refuses a summary hero that makes the visitor read a pitch before choosing.
+OWN-WORLD: Near-black ground, muted gameplay footage at low opacity behind a vignette. Archivo Black title
+at display scale, hairline rules, lettered entries A and B set like a cast list. Engineering carries safety
+orange, game dev carries violet — the accents each destination owns.
+STORY: A visitor reads one name, understands both disciplines in a line, and takes a lettered entry.
+FIRST VIEWPORT: Footage, centred title block, two entries on a hairline rule across the lower third.
+FORM: Title card; staging: footage drift, entries weighted on hover.
 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ibad Ullah — Software Engineer &amp; Game Developer</title>
 <meta name="description" content="Ibad Ullah — industrial software engineering and game development. Stockholm, Sweden.">
-<meta name="theme-color" content="#0b0b0d">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0b0d'/><text x='50' y='70' font-size='54' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23f4f3ef'>IU</text></svg>">
+<meta name="theme-color" content="#050507">
+<meta property="og:title" content="Ibad Ullah — Software Engineer &amp; Game Developer">
+<meta property="og:description" content="Industrial systems and game development. Stockholm, Sweden.">
+<meta property="og:image" content="assets/Hands of the end.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23050507'/><text x='50' y='71' font-size='52' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23f5f5f6'>IU</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#f4f3ef; --paper-2:#e7e4dc; --ink:#16181d; --mid:#4a4f59; --soft:#8a8f99;
-    --signal:#d4521f; --rule:#cfccc4;
-    --dark:#09090b; --dark-2:#141419; --chalk:#f5f5f6; --dim:#9d9da8; --violet:#a78bfa;
+    --ink:#f5f5f6; --dim:#9fa0ab; --faint:#6a6b76;
+    --ground:#050507;
+    --orange:#ff6b2c; --violet:#a78bfa;
+    --rule:rgba(245,245,246,.16);
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
   body{
+    background:var(--ground);color:var(--ink);
     font-family:'Archivo',system-ui,sans-serif;
-    background:var(--dark);color:var(--chalk);
-    min-height:100svh;overflow-x:hidden;
+    overflow:hidden;
   }
   a{text-decoration:none;color:inherit}
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
 
-  .split{
+  /* ── footage ── */
+  .plate{position:fixed;inset:0;z-index:0;overflow:hidden}
+  .plate video,.plate img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:.40;filter:grayscale(.35) contrast(1.08) brightness(.9);
+    animation:drift 34s ease-in-out infinite alternate;
+  }
+  @keyframes drift{from{transform:scale(1.06) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-1.4%,-1.2%,0)}}
+  .plate::after{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(130% 95% at 50% 42%,transparent 18%,rgba(5,5,7,.70) 62%,rgba(5,5,7,.96) 100%),
+      linear-gradient(180deg,rgba(5,5,7,.86) 0%,transparent 26%,transparent 54%,rgba(5,5,7,.93) 100%);
+  }
+  /* faint scanline texture, keeps the frame from looking like flat video */
+  .plate::before{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px);
+  }
+
+  /* ── frame ── */
+  .frame{
+    position:relative;z-index:2;height:100%;
+    display:grid;grid-template-rows:auto 1fr auto;
+    padding:clamp(20px,3.1vw,40px) clamp(20px,4vw,56px);
+  }
+
+  .top{display:flex;justify-content:space-between;align-items:center;
+    font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint)}
+  .top .reel{display:flex;align-items:center;gap:9px}
+  .top .rec{width:7px;height:7px;border-radius:50%;background:var(--orange);
+    animation:blink 2.6s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* ── title ── */
+  .title{
+    align-self:center;text-align:center;
+    animation:lift 1.1s cubic-bezier(.16,1,.3,1) .12s backwards;
+  }
+  @keyframes lift{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+  .title .pre{
+    font-size:clamp(9.5px,.86vw,11.5px);letter-spacing:.42em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:clamp(14px,1.7vw,22px);
+  }
+  .title h1{
+    font-family:'Archivo Black',sans-serif;text-transform:uppercase;
+    font-size:clamp(2.9rem,11.2vw,9.4rem);line-height:.86;letter-spacing:-.025em;
+    text-shadow:0 10px 58px rgba(0,0,0,.72);
+  }
+  .title .role{
+    margin-top:clamp(16px,2vw,26px);
+    font-size:clamp(10px,1.02vw,13px);letter-spacing:.3em;text-transform:uppercase;
+    color:var(--ink);opacity:.9;
+    display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.5vw,20px);
+    flex-wrap:wrap;
+  }
+  .title .role i{font-style:normal;color:var(--faint)}
+  .title .where{
+    margin-top:11px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);
+  }
+  .title .where .dot{
+    display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;
+    margin-right:7px;vertical-align:1px;box-shadow:0 0 9px rgba(74,222,128,.85);
+  }
+
+  /* ── entries ── */
+  .entries{
     display:grid;grid-template-columns:1fr 1fr;
-    min-height:100svh;position:relative;
+    border-top:1px solid var(--rule);
+    animation:lift 1.1s cubic-bezier(.16,1,.3,1) .3s backwards;
   }
-  @media (min-width:901px){
-    .split{transition:grid-template-columns .55s cubic-bezier(.16,1,.3,1)}
-    .split:has(.door.eng:hover){grid-template-columns:1.22fr .78fr}
-    .split:has(.door.game:hover){grid-template-columns:.78fr 1.22fr}
+  .entry{
+    position:relative;display:block;
+    padding:clamp(18px,2.3vw,30px) clamp(14px,2vw,28px) clamp(6px,1vw,12px) 0;
+    transition:padding-left .45s cubic-bezier(.16,1,.3,1);
   }
+  .entry + .entry{border-left:1px solid var(--rule);padding-left:clamp(18px,2.6vw,38px)}
+  .entry::before{
+    content:"";position:absolute;top:-1px;left:0;height:1px;width:0;
+    background:var(--c);transition:width .55s cubic-bezier(.16,1,.3,1);
+  }
+  .entry:hover::before{width:100%}
+  .entry.eng{--c:var(--orange)}
+  .entry.game{--c:var(--violet)}
 
-  .door{
-    position:relative;display:flex;flex-direction:column;justify-content:flex-end;
-    padding:clamp(28px,4.4vw,64px);overflow:hidden;isolation:isolate;
-    transition:background-color .5s ease;
+  .entry .ltr{
+    font-family:'Archivo Black',sans-serif;font-size:11px;letter-spacing:.2em;
+    color:var(--c);margin-bottom:9px;display:block;
   }
-  .door::after{
-    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    opacity:0;transition:opacity .5s ease;
+  .entry h2{
+    font-size:clamp(1.15rem,2.35vw,1.95rem);font-weight:800;letter-spacing:-.02em;line-height:1.08;
+    display:flex;align-items:center;gap:14px;
   }
+  .entry h2 .arw{
+    font-size:.72em;color:var(--c);opacity:0;transform:translateX(-10px);
+    transition:opacity .4s ease,transform .45s cubic-bezier(.16,1,.3,1);
+  }
+  .entry:hover h2 .arw{opacity:1;transform:none}
+  .entry p{
+    margin-top:8px;font-size:clamp(12.5px,1.03vw,14.5px);color:var(--dim);
+    max-width:34ch;line-height:1.52;
+  }
+  .entry .meta{
+    margin-top:clamp(10px,1.3vw,16px);font-size:10.5px;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--faint);
+  }
+  .entry:hover .meta{color:var(--c)}
 
-  /* ── engineering door ── */
-  .eng{background:var(--paper);color:var(--ink)}
-  .eng::before{
-    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-    background-image:
-      linear-gradient(var(--rule) 1px,transparent 1px),
-      linear-gradient(90deg,var(--rule) 1px,transparent 1px);
-    background-size:34px 34px;
-    opacity:.5;
-    transition:opacity .5s ease,transform .7s cubic-bezier(.16,1,.3,1);
-    mask-image:radial-gradient(120% 90% at 20% 90%,#000 25%,transparent 72%);
+  .bottom{
+    display:flex;justify-content:space-between;align-items:center;gap:14px;
+    padding-top:clamp(10px,1.3vw,16px);
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);
   }
-  .eng:hover::before{opacity:.85;transform:scale(1.04)}
+  .bottom a{border-bottom:1px solid rgba(245,245,246,.25);padding-bottom:1px}
+  .bottom a:hover{color:var(--ink);border-color:var(--ink)}
 
-  /* ── game door ── */
-  .game{background:var(--dark-2);color:var(--chalk)}
-  .game .shot{
-    position:absolute;inset:0;z-index:0;
-    background:url('assets/Hands of the end.png') center/cover no-repeat;
-    opacity:.26;filter:grayscale(.3) contrast(1.05);
-    transition:opacity .55s ease,transform .8s cubic-bezier(.16,1,.3,1);
-  }
-  .game:hover .shot{opacity:.46;transform:scale(1.05)}
-  .game::after{
-    background:linear-gradient(0deg,rgba(9,9,11,.94) 8%,rgba(9,9,11,.45) 52%,rgba(9,9,11,.72) 100%);
-    opacity:1;
-  }
-
-  .door > *{position:relative;z-index:2}
-
-  .kick{
-    font-size:11.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
-    display:flex;align-items:center;gap:10px;margin-bottom:14px;
-  }
-  .kick::before{content:"";width:26px;height:1.5px;background:currentColor}
-  .eng .kick{color:var(--signal)}
-  .game .kick{color:var(--violet)}
-
-  .door h2{
-    font-size:clamp(2rem,4.1vw,3.6rem);line-height:1.02;letter-spacing:-.03em;
-    font-weight:800;max-width:12ch;
-  }
-  .game h2{font-family:'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:-.01em}
-
-  .door p{
-    margin-top:14px;font-size:clamp(14px,1.08vw,16px);max-width:40ch;line-height:1.6;
-  }
-  .eng p{color:var(--mid)}
-  .game p{color:var(--dim)}
-  .door p b{font-weight:600}
-  .eng p b{color:var(--ink)}
-  .game p b{color:var(--chalk)}
-
-  .inside{
-    margin-top:22px;display:flex;flex-wrap:wrap;gap:6px;
-    font-size:11px;font-weight:600;letter-spacing:.03em;
-  }
-  .inside span{padding:4px 9px;border:1px solid currentColor;opacity:.62}
-  .eng .inside{color:var(--mid)}
-  .game .inside{color:var(--dim)}
-
-  .enter{
-    margin-top:30px;display:inline-flex;align-items:center;gap:12px;
-    font-size:13.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
-  }
-  .enter .arrow{transition:transform .4s cubic-bezier(.16,1,.3,1);display:inline-block}
-  .door:hover .enter .arrow{transform:translateX(8px)}
-  .eng .enter{color:var(--signal)}
-  .game .enter{color:var(--violet)}
-
-  .count{
-    position:absolute;top:clamp(26px,4vw,52px);right:clamp(26px,4vw,52px);z-index:2;
-    font-size:11px;letter-spacing:.1em;opacity:.5;
-  }
-
-  /* ── seam identity ── */
-  .seam{
-    position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:10;
-    display:flex;flex-direction:column;align-items:center;gap:0;
-    padding-top:clamp(24px,3.4vw,42px);pointer-events:none;
-  }
-  .seam .nm{
-    font-family:'Archivo Black',sans-serif;font-size:clamp(14px,1.35vw,18px);
-    letter-spacing:.3em;text-transform:uppercase;
-    background:var(--dark);color:var(--chalk);
-    padding:9px 18px;white-space:nowrap;
-  }
-  .seam .sub{
-    margin-top:9px;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;
-    color:var(--chalk);background:var(--dark);padding:5px 12px;opacity:.82;white-space:nowrap;
-  }
-
-  .foot{
-    position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:10;
-    padding-bottom:clamp(18px,2.4vw,28px);pointer-events:none;
-  }
-  .foot span{
-    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-    background:var(--dark);color:var(--chalk);opacity:.7;padding:5px 13px;white-space:nowrap;
-  }
-
-  @media (max-width:900px){
-    .split{grid-template-columns:1fr;min-height:0}
-    .door{min-height:62svh;justify-content:flex-end}
-    .seam{position:static;transform:none;padding:26px 0 0}
-    .seam .nm,.seam .sub{background:transparent}
-    .seam{background:var(--dark)}
-    .count{display:none}
-    .foot{position:static;transform:none;padding:20px 0 26px;text-align:center;background:var(--dark)}
-    .foot span{background:transparent}
-    body{overflow-x:hidden}
+  /* ── responsive ── */
+  @media (max-width:860px){
+    body{overflow:auto}
+    .frame{height:auto;min-height:100svh}
+    .title{padding:clamp(40px,12vw,70px) 0}
+    .entries{grid-template-columns:1fr}
+    .entry + .entry{border-left:none;border-top:1px solid var(--rule);padding-left:0}
+    .entry{padding-right:0}
+    .entry p{max-width:48ch}
+    .bottom{flex-direction:column;align-items:flex-start;gap:9px;padding-bottom:26px}
+    .top .hide-sm{display:none}
   }
   @media (prefers-reduced-motion:reduce){
-    *{transition:none!important;animation:none!important}
+    *{animation:none!important;transition:none!important}
+    .plate video,.plate img{transform:scale(1.06)}
   }
 </style>
 </head>
 <body>
 
-<div class="seam">
-  <div class="nm">Ibad Ullah</div>
-  <div class="sub">Stockholm, Sweden</div>
+<div class="plate">
+  <video autoplay muted loop playsinline poster="assets/landing-poster.jpg">
+    <source src="assets/Fred's%20Escape(Main%20View).mp4" type="video/mp4">
+  </video>
 </div>
 
-<main class="split">
+<div class="frame">
 
-  <a class="door eng" href="engineering.html">
-    <span class="count mono">01 / 02</span>
-    <div class="kick">Industrial &amp; Systems</div>
-    <h2>Software&nbsp;Engineer</h2>
-    <p>Six years of production systems for manufacturing and industrial automation.
-    <b>ERP platforms, HVAC diagnostics, embedded firmware</b> — down to Modbus RTU,
-    RS-485 and ESP32.</p>
-    <div class="inside">
-      <span>AC Debugger</span><span>Modbus Test Lab</span><span>RS-485 Firmware</span><span>Fuel Station ERP</span>
+  <div class="top">
+    <div class="reel"><span class="rec"></span><span>Portfolio</span></div>
+    <div class="hide-sm mono">2026</div>
+  </div>
+
+  <div class="title">
+    <div class="pre">Stockholm, Sweden</div>
+    <h1>Ibad Ullah</h1>
+    <div class="role">
+      <span>Software Engineer</span><i>&amp;</i><span>Game Developer</span>
     </div>
-    <div class="enter">Enter <span class="arrow">&rarr;</span></div>
-  </a>
+    <div class="where"><span class="dot"></span>Open to opportunities</div>
+  </div>
 
-  <a class="door game" href="games.html">
-    <div class="shot" aria-hidden="true"></div>
-    <span class="count mono">02 / 02</span>
-    <div class="kick">Gameplay &amp; Engines</div>
-    <h2>Game Developer</h2>
-    <p>Gameplay and engine architecture in <b>C++ and C#</b> — authoritative netcode,
-    procedural worlds, a colony sim running on no engine at all.</p>
-    <div class="inside">
-      <span>Hands of the End</span><span>Red Bread Repossession</span><span>Cultivation Fortress Sim</span><span>Fred's Escape</span>
+  <div>
+    <div class="entries">
+
+      <a class="entry eng" href="engineering.html">
+        <span class="ltr">A — Engineering</span>
+        <h2>Industrial Systems <span class="arw">&rarr;</span></h2>
+        <p>ERP platforms, HVAC diagnostics and embedded firmware. Six years, down to
+        Modbus RTU, RS-485 and ESP32.</p>
+        <div class="meta">6 systems · Sabro Technologies</div>
+      </a>
+
+      <a class="entry game" href="games.html">
+        <span class="ltr">B — Game Dev</span>
+        <h2>Gameplay &amp; Engines <span class="arw">&rarr;</span></h2>
+        <p>Authoritative netcode, procedural worlds, and a colony sim running on no
+        engine at all. C++ and C#.</p>
+        <div class="meta">9 projects · Unity · Unreal · C++</div>
+      </a>
+
     </div>
-    <div class="enter">Enter <span class="arrow">&rarr;</span></div>
-  </a>
 
-</main>
+    <div class="bottom">
+      <span>&copy; 2026 Ibad Ullah</span>
+      <span><a href="mailto:ibadullah.k81@gmail.com">ibadullah.k81@gmail.com</a> &nbsp;·&nbsp; <a href="https://github.com/Ebad018" target="_blank" rel="noopener">GitHub</a></span>
+    </div>
+  </div>
 
-<div class="foot"><span>Pick a side — or <a href="mailto:ibadullah.k81@gmail.com" style="pointer-events:auto;border-bottom:1px solid currentColor">just email me</a></span></div>
+</div>
+
+<script>
+  // Entrance animations hide their elements until they run. If they never do
+  // (frozen tab, animation disabled, reduced motion), force the content visible
+  // so the page can never render empty.
+  (function () {
+    var reveal = function () {
+      ['.title', '.entries'].forEach(function (s) {
+        var el = document.querySelector(s);
+        // clearing the animation is what restores visibility — an animation's
+        // fill-mode outranks inline opacity in the cascade
+        if (el) { el.style.animation = 'none'; }
+      });
+    };
+    document.querySelectorAll('.title, .entries').forEach(function (el) {
+      el.addEventListener('animationend', reveal, { once: true });
+    });
+    setTimeout(reveal, 1800);
+  })();
+</script>
 
 </body>
 </html>

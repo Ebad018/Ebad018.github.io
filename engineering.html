@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+THESIS: An engineering portfolio read as equipment documentation, not a marketing site. Every project is a
+specification sheet with real measured values. Refuses the dark cinematic world of games.html, refuses hero
+imagery, refuses card grids of icon+heading+text.
+OWN-WORLD: Technical datasheet on warm paper-white. Hairline 1px rules, a strict tabular grid, safety-orange
+signal colour used only for live values and status. IBM-style grotesk headings; mono reserved for genuine
+measurement — register addresses, protocols, telemetry.
+STORY: A hiring engineer sees the systems, the protocols they speak, and what shipped, within one screen.
+FIRST VIEWPORT: Spec header block with role, location, availability. Index of systems below, numbered,
+each a row of real stack data. No image above the fold by design.
+FORM: Equipment datasheet; staging: index table into per-system spec blocks.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ibad Ullah — Engineering</title>
+<meta name="description" content="Industrial software engineering: ERP platforms, HVAC diagnostics, embedded firmware, Modbus RTU and RS-485 device integration.">
+<meta name="theme-color" content="#f4f3ef">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f3ef;
+    --paper-2:#eceae4;
+    --ink:#16181d;
+    --mid:#4a4f59;
+    --soft:#878d99;
+    --rule:#d2cfc7;
+    --rule-dark:#b4b0a6;
+    --signal:#d4521f;
+    --live:#1f7a4d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Archivo',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  /* ── fixed chrome ── */
+  .bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,243,239,.93);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--rule);
+  }
+  .bar-in{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .bar .name{font-weight:800;letter-spacing:-.2px;font-size:16px}
+  .bar nav{display:flex;align-items:center;gap:20px;font-size:13px;font-weight:600}
+  .bar nav a{color:var(--mid)}
+  .bar nav a:hover{color:var(--signal)}
+  .bar .swap{
+    border:1px solid var(--rule-dark);border-radius:2px;
+    padding:7px 13px;font-size:12px;letter-spacing:.04em;
+  }
+  .bar .swap:hover{border-color:var(--signal);color:var(--signal)}
+
+  /* ── masthead ── */
+  .mast{padding:64px 0 34px;border-bottom:2px solid var(--ink)}
+  .mast h1{
+    font-size:clamp(2.4rem,5.6vw,4.2rem);font-weight:800;
+    letter-spacing:-.03em;line-height:1.02;max-width:17ch;
+  }
+  .mast .lede{
+    margin-top:20px;max-width:62ch;font-size:17px;color:var(--mid);
+  }
+  .mast .lede b{color:var(--ink);font-weight:600}
+
+  .facts{
+    margin-top:34px;display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    border-top:1px solid var(--rule);
+  }
+  .fact{padding:14px 16px 2px 0;border-right:1px solid var(--rule)}
+  .fact:last-child{border-right:none}
+  .fact dt{
+    font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--soft);margin-bottom:5px;
+  }
+  .fact dd{font-size:15px;font-weight:600}
+  .fact dd .dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--live);margin-right:6px;vertical-align:1px;
+  }
+
+  /* ── section headings ── */
+  .sec{padding:56px 0 0}
+  .sec-head{
+    display:flex;align-items:baseline;gap:14px;
+    padding-bottom:10px;border-bottom:1px solid var(--rule-dark);margin-bottom:0;
+  }
+  .sec-head h2{font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+  .sec-head .count{font-size:12px;color:var(--soft);margin-left:auto}
+
+  /* ── system spec blocks ── */
+  .sys{
+    display:grid;grid-template-columns:52px 1fr 300px;
+    gap:0 26px;padding:26px 0;border-bottom:1px solid var(--rule);
+    align-items:start;
+  }
+  .sys:hover{background:rgba(212,82,31,.028)}
+  .sys .idx{
+    font-size:12px;font-weight:700;color:var(--signal);
+    padding-top:4px;letter-spacing:.06em;
+  }
+  .sys h3{font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+  .sys .tagline{margin-top:3px;font-size:12.5px;color:var(--soft);font-weight:500}
+  .sys p{margin-top:11px;font-size:14.5px;color:var(--mid);max-width:62ch}
+  .sys p b{color:var(--ink);font-weight:600}
+
+  .specs{margin-top:14px;border-top:1px solid var(--rule)}
+  .spec{
+    display:grid;grid-template-columns:118px 1fr;gap:12px;
+    padding:6px 0;border-bottom:1px solid var(--rule);
+    font-size:12.5px;
+  }
+  .spec dt{
+    font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    font-size:10.5px;color:var(--soft);padding-top:2px;
+  }
+  .spec dd{color:var(--mid)}
+
+  .side{padding-top:4px}
+  .side img{
+    width:100%;display:block;border:1px solid var(--rule-dark);
+    background:#0c1222;
+  }
+  .side .shotcap{
+    margin-top:7px;font-size:11px;color:var(--soft);
+    display:flex;justify-content:space-between;gap:10px;
+  }
+  .stack-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:13px}
+  .stack-list span{
+    font-size:11px;font-weight:600;letter-spacing:.03em;
+    border:1px solid var(--rule-dark);padding:3px 8px;color:var(--mid);
+  }
+  .repo{
+    margin-top:13px;display:inline-flex;align-items:center;gap:7px;
+    font-size:12px;font-weight:600;color:var(--signal);
+    border-bottom:1px solid currentColor;padding-bottom:1px;
+  }
+  .repo.closed{color:var(--soft);border-bottom-style:dotted;cursor:default}
+
+  /* ── experience ledger ── */
+  .job{
+    display:grid;grid-template-columns:180px 1fr;gap:0 26px;
+    padding:22px 0;border-bottom:1px solid var(--rule);
+  }
+  .job .when{font-size:12.5px;color:var(--soft);font-weight:600;padding-top:3px}
+  .job .where{font-size:13px;color:var(--signal);font-weight:600;margin-top:2px}
+  .job h3{font-size:17px;font-weight:700}
+  .job ul{margin-top:10px;list-style:none}
+  .job li{
+    font-size:14px;color:var(--mid);padding-left:15px;position:relative;margin-bottom:5px;
+  }
+  .job li::before{
+    content:"";position:absolute;left:0;top:.62em;
+    width:5px;height:1px;background:var(--rule-dark);
+  }
+
+  /* ── capability matrix ── */
+  .matrix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 38px}
+  .cap{padding:15px 0;border-bottom:1px solid var(--rule)}
+  .cap dt{
+    font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--soft);margin-bottom:6px;
+  }
+  .cap dd{font-size:13.5px;color:var(--mid);line-height:1.7}
+
+  /* ── close ── */
+  .close{padding:60px 0 24px;border-top:2px solid var(--ink);margin-top:56px}
+  .close h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;letter-spacing:-.02em}
+  .close p{margin-top:12px;color:var(--mid);max-width:54ch;font-size:16px}
+  .actions{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
+  .btn{
+    border:1px solid var(--ink);padding:11px 20px;font-size:13px;font-weight:700;
+    letter-spacing:.03em;background:var(--ink);color:var(--paper);
+  }
+  .btn:hover{background:var(--signal);border-color:var(--signal)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:transparent;border-color:var(--signal);color:var(--signal)}
+  footer{padding:26px 0 40px;font-size:12px;color:var(--soft);
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+  /* ── reveal ── */
+  .rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+  .rv.on{opacity:1;transform:none}
+
+  @media (max-width:980px){
+    .sys{grid-template-columns:38px 1fr;gap:0 16px}
+    .side{grid-column:2;margin-top:16px}
+    .facts{grid-template-columns:repeat(2,1fr)}
+    .fact:nth-child(2){border-right:none}
+  }
+  @media (max-width:680px){
+    .wrap{padding:0 18px}
+    .job{grid-template-columns:1fr;gap:4px}
+    .matrix{grid-template-columns:1fr;gap:0}
+    .facts{grid-template-columns:1fr}
+    .fact{border-right:none;border-bottom:1px solid var(--rule)}
+    .bar nav a.hide-sm{display:none}
+    .spec{grid-template-columns:96px 1fr;gap:8px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <a class="name" href="./">Ibad Ullah</a>
+    <nav>
+      <a class="hide-sm" href="#systems">Systems</a>
+      <a class="hide-sm" href="#experience">Experience</a>
+      <a class="hide-sm" href="#capability">Capability</a>
+      <a class="swap" href="games.html">Game Dev &rarr;</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ══ MASTHEAD ══ -->
+  <section class="mast">
+    <h1>Software for machines that have to keep running.</h1>
+    <p class="lede">
+      Six years building production systems for manufacturing and industrial automation &mdash;
+      <b>ERP platforms, factory-floor diagnostics, embedded firmware and device integration</b> &mdash;
+      three of them leading a team of ten across frontend, backend, embedded and QA.
+      I work from C#/.NET and React down to <b>Modbus RTU, RS-485 and ESP32 firmware</b>.
+    </p>
+    <dl class="facts">
+      <div class="fact"><dt>Status</dt><dd><span class="dot"></span>Open to opportunities</dd></div>
+      <div class="fact"><dt>Based</dt><dd>Stockholm, Sweden</dd></div>
+      <div class="fact"><dt>Experience</dt><dd>6 years &middot; 3 leading</dd></div>
+      <div class="fact"><dt>Domain</dt><dd>HVAC &middot; Manufacturing &middot; ERP</dd></div>
+    </dl>
+  </section>
+
+  <!-- ══ SYSTEMS ══ -->
+  <section class="sec" id="systems">
+    <div class="sec-head">
+      <h2>Systems Built</h2>
+      <span class="count mono">06 entries</span>
+    </div>
+
+    <!-- 01 AC Debugger -->
+    <article class="sys rv">
+      <div class="idx mono">01</div>
+      <div>
+        <h3>Sabro AC Debugger &mdash; &ldquo;Reacthon&rdquo;</h3>
+        <div class="tagline">Desktop diagnostics &amp; OTA suite for ESP32 air conditioners</div>
+        <p>The tool the hardware team debugs with. It decodes <b>live binary telemetry</b> straight off the
+        unit &mdash; temperatures, compressor RPM, discharge and suction pressure, fault flags &mdash; and
+        streams it over local WebSocket for bench work or through Firebase when the unit is in the field.
+        Firmware goes back the other way over the air.</p>
+        <dl class="specs">
+          <div class="spec"><dt>Transport</dt><dd>Local WebSocket &middot; Firebase Realtime Database relay</dd></div>
+          <div class="spec"><dt>Telemetry</dt><dd>Custom binary payload parser, CSV capture, session logging</dd></div>
+          <div class="spec"><dt>Firmware</dt><dd>OTA delivery with versioned payloads and crash history</dd></div>
+        </dl>
+        <div class="stack-list"><span>Python</span><span>React</span><span>WebSocket</span><span>Firebase</span><span>PyWebView</span></div>
+        <span class="repo closed">Private &mdash; Sabro-Tech org</span>
+      </div>
+      <div class="side">
+        <img src="assets/ac-debugger.png" alt="Live serial telemetry from an Elios geyser unit: temperatures, BTU, compressor RPM, pressures and an active-fault summary">
+        <div class="shotcap"><span>Live serial output</span><span class="mono">ESP32 &middot; WS</span></div>
+      </div>
+    </article>
+
+    <!-- 02 Serial Diagnostic -->
+    <article class="sys rv">
+      <div class="idx mono">02</div>
+      <div>
+        <h3>Serial Diagnostic &amp; OTA Tool</h3>
+        <div class="tagline">Field service utility for ESP32-based AC units</div>
+        <p>A focused .NET tool technicians run on a laptop at the unit. Real-time serial monitoring,
+        WebSocket command injection, and <b>over-the-air firmware flashing</b> &mdash; shipped on its own
+        branch as a self-contained Windows build so field staff never touch a compiler.</p>
+        <dl class="specs">
+          <div class="spec"><dt>Runtime</dt><dd>.NET 6 &middot; WinForms shell</dd></div>
+          <div class="spec"><dt>Delivery</dt><dd>Source branch plus prebuilt executable branch</dd></div>
+          <div class="spec"><dt>Variants</dt><dd>Electron and Python prototypes in-repo</dd></div>
+        </dl>
+        <div class="stack-list"><span>C#</span><span>.NET 6</span><span>ESP32</span><span>WebSocket</span><span>OTA</span></div>
+        <a class="repo" href="https://github.com/Sabro-Tech/Serial-Diagnostic-And-OTA" target="_blank" rel="noopener">View source &nearr;</a>
+      </div>
+      <div class="side"></div>
+    </article>
+
+    <!-- 03 HVAC Lab -->
+    <article class="sys rv">
+      <div class="idx mono">03</div>
+      <div>
+        <h3>HVAC Chiller Testing Lab</h3>
+        <div class="tagline">Modbus RTU acquisition and certification reporting</div>
+        <p>Automates Sabro's chiller test bench. Polls <b>six Modbus RTU slave devices</b> on a one-second
+        cycle for temperature, pressure, humidity and electrical load, then computes the numbers the lab
+        actually certifies on &mdash; total and sensible BTU, latent capacity, EER, and superheat/subcool
+        against the R410A pressure-temperature chart. Results export as labelled PDF reports.</p>
+        <dl class="specs">
+          <div class="spec"><dt>Bus</dt><dd>Modbus RTU over serial, slave IDs 1&ndash;6, 1&nbsp;s auto-poll</dd></div>
+          <div class="spec"><dt>Sensors</dt><dd>S1&ndash;S4, A1&ndash;A8, superheat, subcool, wet bulb, enthalpy</dd></div>
+          <div class="spec"><dt>Compute</dt><dd>tBTU, sBTU, latent capacity, EER, R410A PT lookup</dd></div>
+          <div class="spec"><dt>Reporting</dt><dd>Landscape PDF via iTextSharp, grouped by circuit</dd></div>
+        </dl>
+        <div class="stack-list"><span>C#</span><span>WinForms</span><span>Modbus RTU</span><span>iTextSharp</span></div>
+        <a class="repo" href="https://github.com/Sabro-Tech/Csharp-winForms-Hvac-Lab" target="_blank" rel="noopener">View source &nearr;</a>
+      </div>
+      <div class="side"></div>
+    </article>
+
+    <!-- 04 RS-485 firmware -->
+    <article class="sys rv">
+      <div class="idx mono">04</div>
+      <div>
+        <h3>RS-485 Air Conditioner Firmware</h3>
+        <div class="tagline">One codebase across the full product range</div>
+        <p>Sabro's AC range ran on per-model firmware forks that drifted apart. This consolidates them into a
+        <b>single RS-485 codebase</b> covering compressor run control, indoor fan staging, EEPROM persistence
+        across power loss, IR remote decoding, humidity sensing, LCD output and fault diagnostics &mdash;
+        with model selection resolved at configuration rather than by branching the source.</p>
+        <dl class="specs">
+          <div class="spec"><dt>Bus</dt><dd>RS-485 half-duplex, multi-model addressing</dd></div>
+          <div class="spec"><dt>Subsystems</dt><dd>Compressor, fan staging, stepper valve, IR, LCD, EEPROM</dd></div>
+          <div class="spec"><dt>Resilience</dt><dd>Hardware RTC retains schedule through power loss</dd></div>
+        </dl>
+        <div class="stack-list"><span>C</span><span>C++</span><span>Embedded</span><span>RS-485</span><span>EEPROM</span></div>
+        <span class="repo closed">Private &mdash; Sabro-Tech org</span>
+      </div>
+      <div class="side"></div>
+    </article>
+
+    <!-- 05 Elios -->
+    <article class="sys rv">
+      <div class="idx mono">05</div>
+      <div>
+        <h3>Elios Geyser Control App</h3>
+        <div class="tagline">Kiosk-locked tablet controller for water heating</div>
+        <p>A Flutter app that pairs with Elios water heaters over WebSocket and runs on
+        <b>MDM/kiosk-configured Android tablets</b> mounted at the unit. Handles device pairing, heat
+        scheduling, auto-restart recovery after dropouts, live telemetry and in-app onboarding for
+        installers who have never seen the system before.</p>
+        <dl class="specs">
+          <div class="spec"><dt>Transport</dt><dd>Direct WebSocket to appliance firmware</dd></div>
+          <div class="spec"><dt>Deployment</dt><dd>Android MDM / kiosk lockdown, tablet form factor</dd></div>
+          <div class="spec"><dt>Recovery</dt><dd>Auto-restart and re-pair after connection loss</dd></div>
+        </dl>
+        <div class="stack-list"><span>Flutter</span><span>Dart</span><span>WebSocket</span><span>Android</span></div>
+        <span class="repo closed">Private &mdash; Sabro-Tech org</span>
+      </div>
+      <div class="side"></div>
+    </article>
+
+    <!-- 06 FERP -->
+    <article class="sys rv">
+      <div class="idx mono">06</div>
+      <div>
+        <h3>FERP &mdash; Fuel Station ERP</h3>
+        <div class="tagline">Commissioned offline-first ERP for fuel retail</div>
+        <p>Built end-to-end for a fuel station owner in Pakistan, where connectivity is not a given. An
+        Electron and Dexie.js sync engine lets a station <b>keep trading through a blackout with zero data
+        loss</b>, every client is isolated in a multi-tenant PostgreSQL schema through Prisma, and tank
+        calibration is reconciled against shift balances to surface fuel theft.</p>
+        <dl class="specs">
+          <div class="spec"><dt>Offline</dt><dd>Dexie.js queue with massive-payload reconciliation</dd></div>
+          <div class="spec"><dt>Tenancy</dt><dd>Strict multi-tenant PostgreSQL via Prisma ORM</dd></div>
+          <div class="spec"><dt>Accounting</dt><dd>Double-entry ledger, trial balance, shift close</dd></div>
+          <div class="spec"><dt>Variance</dt><dd>Tank calibration vs. metered sales, tolerance alerting</dd></div>
+        </dl>
+        <div class="stack-list"><span>React</span><span>TypeScript</span><span>Electron</span><span>Node.js</span><span>PostgreSQL</span></div>
+        <button class="repo" style="background:none;border:none;border-bottom:1px solid currentColor;font-family:inherit;cursor:pointer" onclick="openShots()">View screenshots &nearr;</button>
+      </div>
+      <div class="side">
+        <img src="assets/FERP-variance.png" alt="FERP fuel variance report flagging per-tank shortages against expected volume">
+        <div class="shotcap"><span>Fuel variance report</span><span class="mono">tolerance 1%</span></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ══ EXPERIENCE ══ -->
+  <section class="sec" id="experience">
+    <div class="sec-head">
+      <h2>Experience</h2>
+      <span class="count mono">2019 &rarr; present</span>
+    </div>
+
+    <article class="job rv">
+      <div>
+        <div class="when mono">Jan 2023 &ndash; Feb 2026</div>
+        <div class="where">Sabro Technologies</div>
+        <div class="when">Islamabad, Pakistan</div>
+      </div>
+      <div>
+        <h3>Lead Software Engineer</h3>
+        <ul>
+          <li>Delivered ERP, Quality Control and CRM platforms on schedule by leading 10+ engineers across frontend, backend, embedded and QA.</li>
+          <li>Cut client licence and support costs by replacing legacy SAP/Oracle installs with bespoke ERP for pharmaceutical, paper and steel mills.</li>
+          <li>Gave field technicians live HVAC control and diagnostics through Modbus RTU tooling paired with Flutter and MQTT mobile apps.</li>
+          <li>Kept factory staff productive without reliable connectivity by shipping Firebase applications with offline-first synchronisation.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="job rv">
+      <div>
+        <div class="when mono">Apr 2020 &ndash; Dec 2022</div>
+        <div class="where">Sabro Technologies</div>
+        <div class="when">Islamabad, Pakistan</div>
+      </div>
+      <div>
+        <h3>Software Engineer &rarr; Senior Developer</h3>
+        <ul>
+          <li>Cut manual log entry 80% across QA, Inventory, Warranty and Service with a modular WinForms/.NET/SQL Server ERP.</li>
+          <li>Enabled Sabro to design its own control systems by reverse-engineering the protocols of imported AC control boards.</li>
+          <li>Standardised unit health testing with C# Modbus diagnostics covering compressor RPM, sensor verification and relay timing, reporting to PDF.</li>
+          <li>Bridged ESP32 firmware to desktop clients with the embedded team, and mentored juniors through code review.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="job rv">
+      <div>
+        <div class="when mono">2019 &ndash; 2020</div>
+        <div class="where">MFL</div>
+        <div class="when">Karachi, Pakistan (Remote)</div>
+      </div>
+      <div>
+        <h3>Technical Support Engineer</h3>
+        <ul>
+          <li>Removed repetitive daily reporting through Excel macro automation and moved the team onto SharePoint.</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- ══ CAPABILITY ══ -->
+  <section class="sec" id="capability">
+    <div class="sec-head">
+      <h2>Capability</h2>
+      <span class="count mono">stack</span>
+    </div>
+    <dl class="matrix">
+      <div class="cap"><dt>Languages</dt><dd>C# &middot; C++ &middot; C &middot; VB.NET &middot; Dart &middot; TypeScript &middot; JavaScript &middot; Python &middot; SQL</dd></div>
+      <div class="cap"><dt>Industrial &amp; Embedded</dt><dd>Modbus RTU &middot; RS-485 &middot; MQTT &middot; WebSocket &middot; ESP32 firmware &middot; OTA updates &middot; protocol reverse-engineering &middot; binary telemetry parsing</dd></div>
+      <div class="cap"><dt>Back-end</dt><dd>.NET 6 / Core &middot; ASP.NET Core &middot; Entity Framework &middot; Node.js &middot; Prisma &middot; PostgreSQL &middot; SQL Server &middot; Firebase</dd></div>
+      <div class="cap"><dt>Front-end &amp; Desktop</dt><dd>React &middot; Electron &middot; Flutter &middot; WinForms &middot; Blazor / MVC</dd></div>
+      <div class="cap"><dt>Architecture</dt><dd>SOLID &middot; dependency injection &middot; multi-tenant systems &middot; offline-first sync &middot; event-driven design &middot; finite state machines</dd></div>
+      <div class="cap"><dt>Practice</dt><dd>Git &middot; GitHub Actions &middot; Docker &middot; CI/CD &middot; TDD (MSTest/NUnit) &middot; Agile / Scrum &middot; technical documentation &middot; team leadership</dd></div>
+    </dl>
+  </section>
+
+  <!-- ══ CLOSE ══ -->
+  <section class="close">
+    <h2>Let's talk about your systems.</h2>
+    <p>Open to engineering roles and contract work &mdash; industrial software, embedded integration,
+    internal platforms. Based in Stockholm.</p>
+    <div class="actions">
+      <a class="btn" href="mailto:ibadullah.k81@gmail.com">ibadullah.k81@gmail.com</a>
+      <a class="btn ghost" href="https://github.com/Ebad018" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn ghost" href="games.html">Game development &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; <span id="y"></span> Ibad Ullah &mdash; Stockholm, Sweden</span>
+    <span class="mono">Built from scratch. No frameworks, no templates.</span>
+  </footer>
+</main>
+
+<!-- FERP lightbox -->
+<div id="lb" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(18,17,15,.94);align-items:center;justify-content:center;padding:4vw" onclick="if(event.target===this)closeShots()">
+  <button onclick="closeShots()" aria-label="Close" style="position:absolute;top:18px;right:24px;background:none;border:none;color:#f4f3ef;font-size:32px;cursor:pointer;line-height:1">&times;</button>
+  <button id="lbPrev" aria-label="Previous" style="position:absolute;left:3vw;top:50%;transform:translateY(-50%);width:42px;height:42px;border:1px solid rgba(244,243,239,.4);background:rgba(18,17,15,.6);color:#f4f3ef;font-size:19px;cursor:pointer">&#10094;</button>
+  <button id="lbNext" aria-label="Next" style="position:absolute;right:3vw;top:50%;transform:translateY(-50%);width:42px;height:42px;border:1px solid rgba(244,243,239,.4);background:rgba(18,17,15,.6);color:#f4f3ef;font-size:19px;cursor:pointer">&#10095;</button>
+  <figure style="margin:0;max-width:1100px;width:100%">
+    <img id="lbImg" src="" alt="FERP screenshot" style="width:100%;max-height:80vh;object-fit:contain;border:1px solid rgba(244,243,239,.25)">
+    <figcaption id="lbCap" style="margin-top:12px;display:flex;justify-content:space-between;color:#cfcbc2;font-size:12.5px;font-family:'JetBrains Mono',monospace"></figcaption>
+  </figure>
+</div>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  // reveal
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: .08 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // FERP lightbox
+  const shots = [
+    ['assets/FERP-dashboard.png', 'Station dashboard — shift close, litres, variance'],
+    ['assets/FERP-variance.png', 'Fuel variance — per-tank shortage detection'],
+    ['assets/FERP-inventory.png', 'Inventory — live tank levels and shift controls'],
+    ['assets/FERP-accounting.png', 'Accounting — general ledger and voucher entries'],
+    ['assets/FERP-trial-balance.png', 'Trial balance — debit/credit verification'],
+    ['assets/FERP-analytics.png', 'Analytics — sales performance by product']
+  ];
+  let si = 0;
+  const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
+  function show(i) {
+    si = (i + shots.length) % shots.length;
+    lbImg.src = shots[si][0];
+    lbCap.innerHTML = '<span>' + shots[si][1] + '</span><span>' + String(si + 1).padStart(2, '0') + ' / ' + String(shots.length).padStart(2, '0') + '</span>';
+  }
+  function openShots() { show(0); lb.style.display = 'flex'; }
+  function closeShots() { lb.style.display = 'none'; }
+  document.getElementById('lbNext').onclick = () => show(si + 1);
+  document.getElementById('lbPrev').onclick = () => show(si - 1);
+  lbImg.onclick = () => show(si + 1);
+  lbImg.style.cursor = 'pointer';
+  document.addEventListener('keydown', e => {
+    if (lb.style.display !== 'flex') return;
+    if (e.key === 'Escape') closeShots();
+    if (e.key === 'ArrowRight') show(si + 1);
+    if (e.key === 'ArrowLeft') show(si - 1);
+  });
+</script>
+</body>
+</html>

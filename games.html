@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+THESIS: The portfolio is a trailer reel — each project IS the frame. Full-bleed gameplay art leads every viewport; the interface recedes to film-credit chrome. Refuses card grids, split columns, and floating unanchored models.
+OWN-WORLD: Full-bleed screenshots and video behind layered dark scrims. Archivo Black uppercase display, Archivo text. Hairline rules, film-credit title blocks bottom-left, one accent per frame sampled from the art (violet/red/amber/blue/green). Progress bar as a timeline scrubber.
+STORY: A recruiter is dropped inside the village of Hands of the End, reads "Software Engineer & Game Developer" like a title card, scrubs five worlds like a trailer, and ends on a contact frame with one action.
+FIRST VIEWPORT: Full-bleed village key art. Brand top-left, contact top-right. Bottom-left film title block: kicker, two-line display name, logline, meta. Timeline bar bottom.
+FORM: Cinematic reel (rank 1); staging: Ken Burns drift + credit-block reveal; timeline wayfinding.
+-->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ibad Ullah — Software Engineer &amp; Game Developer</title>
+  <meta name="description" content="Software Engineer &amp; Game Developer in Stockholm. Unity/C#, C++, .NET, netcode, ECS/DOTS, procedural generation, and embedded systems." />
+  <meta name="theme-color" content="#050507" />
+
+  <meta property="og:title" content="Ibad Ullah — Software Engineer &amp; Game Developer" />
+  <meta property="og:description" content="Unity/C#, C++, .NET, netcode and procedural worlds. Based in Stockholm, Sweden." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/Hands of the end.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23050507'/><text x='50' y='72' font-size='58' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23a78bfa'>IU</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --ink: #f5f5f6;
+      --ground: #050507;
+      --violet: #a78bfa; --red: #f87171; --amber: #fbbf24; --blue: #60a5fa; --green: #34d399;
+      --gold: #facc15; --rose: #fb7185; --sky: #7dd3fc;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--ground); color: var(--ink); font-family: 'Archivo', sans-serif; line-height: 1.55; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    .display { font-family: 'Archivo Black', sans-serif; text-transform: uppercase; line-height: .92; letter-spacing: -0.01em; }
+
+    /* ── chrome ── */
+    .chrome-top {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 30px;
+      background: linear-gradient(180deg, rgba(5,5,7,.72), transparent);
+    }
+    .chrome-top .brand { font-family: 'Archivo Black'; font-size: 15px; letter-spacing: .22em; text-transform: uppercase; }
+    .chrome-top a.cta {
+      font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: 10px 20px; border: 1px solid rgba(245,245,246,.4); border-radius: 3px;
+      transition: background .25s, border-color .25s;
+    }
+    .chrome-top a.cta:hover { background: rgba(245,245,246,.12); border-color: var(--ink); }
+
+    .timeline {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      padding: 14px 30px 16px;
+      display: flex; align-items: center; gap: 18px;
+      background: linear-gradient(0deg, rgba(5,5,7,.8), transparent);
+      font-variant-numeric: tabular-nums;
+    }
+    .timeline .tl-label { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: rgba(245,245,246,.75); white-space: nowrap; }
+    .timeline .tl-track { flex: 1; height: 2px; background: rgba(245,245,246,.18); position: relative; }
+    .timeline .tl-fill { position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .2s linear; }
+
+    /* ── music mini-player: docked top-center, collapsible ── */
+    .player {
+      position: fixed; top: 0; left: 50%; z-index: 70;
+      transform: translate(-50%, 0);
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(10,10,13,.96);
+      border: 1px solid rgba(167,139,250,.5);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      padding: 12px 18px;
+      box-shadow: 0 16px 44px -12px rgba(0,0,0,.85);
+      transition: transform .5s cubic-bezier(.16,1,.3,1);
+      animation: dropIn .8s cubic-bezier(.16,1,.3,1) .5s backwards, attention 2s ease-in-out 1.5s 3;
+    }
+    .player.collapsed { transform: translate(-50%, -100%); }
+    @keyframes dropIn { from { transform: translate(-50%, -100%) } to { transform: translate(-50%, 0) } }
+    @keyframes attention {
+      0%, 100% { border-color: rgba(167,139,250,.5); }
+      50% { border-color: rgba(167,139,250,1); }
+    }
+    .ptab {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      width: 46px; height: 22px;
+      background: rgba(10,10,13,.96);
+      border: 1px solid rgba(167,139,250,.5);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      color: var(--ink); font-size: 10px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: color .2s, border-color .2s;
+    }
+    .ptab:hover { color: var(--violet); border-color: var(--violet); }
+    .player .pmeta { line-height: 1.25; margin-right: 4px; }
+    .player .pmeta b { display: block; font-size: 12.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+    .player .pmeta span { font-size: 11px; color: #a1a1aa; }
+    .pbtn {
+      background: none; border: 1px solid rgba(245,245,246,.3); color: var(--ink);
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .2s, color .2s;
+    }
+    .pbtn:hover { border-color: var(--violet); color: var(--violet); }
+    #pVol { width: 70px; accent-color: var(--violet); cursor: pointer; }
+    .eq { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+    .eq span { width: 3px; height: 4px; background: var(--violet); }
+    .player.playing .eq span { animation: eq 1s ease-in-out infinite; }
+    .eq span:nth-child(2) { animation-delay: .25s }
+    .eq span:nth-child(3) { animation-delay: .5s }
+    .eq span:nth-child(4) { animation-delay: .75s }
+    @keyframes eq { 0%, 100% { height: 4px } 50% { height: 16px } }
+    @media (max-width: 760px) {
+      .player { padding: 8px 12px; gap: 8px; animation: none; } /* no drop-in on mobile: it starts collapsed */
+      #pVol { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .player { animation: none; }
+      .player.playing .eq span { animation: none; height: 10px; }
+    }
+
+    /* ── frames ── */
+    .frame {
+      position: relative; min-height: 100svh;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+      padding: 110px 30px 92px;
+    }
+    .frame-bg { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+    .frame-bg > img, .frame-bg > video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.12);
+    }
+    .frame-bg > video { z-index: 1; } /* video always covers its fallback image */
+    .frame.on .frame-bg > img, .frame.on .frame-bg > video {
+      animation: burns 16s cubic-bezier(.2,.4,.4,1) forwards;
+    }
+    @keyframes burns { from { transform: scale(1.12) } to { transform: scale(1.0) } }
+    .frame-bg::after {
+      content: ''; position: absolute; inset: 0; z-index: 2;
+      background:
+        linear-gradient(180deg, rgba(5,5,7,.55) 0%, rgba(5,5,7,.1) 30%, rgba(5,5,7,.15) 55%, rgba(5,5,7,.88) 100%),
+        linear-gradient(100deg, rgba(5,5,7,.82) 0%, rgba(5,5,7,.25) 45%, transparent 70%);
+    }
+
+    .credit { position: relative; z-index: 3; max-width: 1500px; width: 100%; margin: 0 auto; }
+    .kick {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 12.5px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase;
+      color: var(--a); margin-bottom: 16px;
+    }
+    .kick::before { content: ''; width: 30px; height: 1.5px; background: var(--a); }
+    .frame h1, .frame h2 { font-size: clamp(2.8rem, 7.2vw, 6rem); max-width: 14ch; margin-bottom: 20px; text-shadow: 0 4px 30px rgba(0,0,0,.6); }
+    .logline { font-size: clamp(1rem, 1.35vw, 1.2rem); font-weight: 500; max-width: 58ch; color: #e4e4e7; margin-bottom: 20px; text-shadow: 0 2px 14px rgba(0,0,0,.7); }
+    .logline strong { color: #fff; }
+
+    .credit-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: rgba(245,245,246,.16); border: 1px solid rgba(245,245,246,.16); max-width: 880px; margin-bottom: 24px; }
+    .credit-cell { background: rgba(5,5,7,.66); padding: 14px 16px; }
+    .credit-cell b { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--a); margin-bottom: 5px; }
+    .credit-cell span { font-size: 13.5px; color: #d4d4d8; line-height: 1.45; display: block; }
+
+    .frame-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
+    .role-tag { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(245,245,246,.8); }
+    .role-tag em { font-style: normal; color: var(--a); }
+    .btn {
+      font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      padding: 13px 26px; border-radius: 3px; border: none; cursor: pointer;
+      background: var(--a); color: #08080a;
+      box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.65);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.line { background: transparent; color: var(--ink); border: 1px solid rgba(245,245,246,.4); box-shadow: none; }
+    .btn.line:hover { border-color: var(--a); color: var(--a); }
+
+    /* stagger */
+    .rv { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1); }
+    .frame.on .rv { opacity: 1; transform: none; }
+    .frame.on .rv:nth-child(1) { transition-delay: .08s } .frame.on .rv:nth-child(2) { transition-delay: .18s }
+    .frame.on .rv:nth-child(3) { transition-delay: .28s } .frame.on .rv:nth-child(4) { transition-delay: .38s }
+    .frame.on .rv:nth-child(5) { transition-delay: .48s }
+
+    /* themes */
+    #hero  { --a: var(--violet) } #hote { --a: var(--violet) } #redbread { --a: var(--red) }
+    #pharaoh { --a: var(--amber) } #ferp { --a: var(--blue) } #mole { --a: var(--green) } #contact { --a: var(--green) }
+    #gyro { --a: var(--rose) } #freds { --a: var(--sky) } #cfs { --a: var(--gold) }
+    .px { image-rendering: pixelated; }
+
+    /* hero specifics */
+    #hero { align-items: flex-end; }
+    #hero .who { position: absolute; top: 96px; right: 30px; z-index: 3; text-align: right; font-size: 13.5px; font-weight: 600; color: rgba(245,245,246,.85); line-height: 1.8; }
+    #hero .who b { color: #fff; }
+    #hero .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; margin-right: 7px; animation: pulse 2.4s infinite; }
+    @keyframes pulse { 50% { opacity: .35 } }
+
+    /* FERP inset */
+    .inset {
+      position: absolute; right: 4vw; bottom: 20vh; z-index: 3;
+      width: min(34vw, 520px); border-radius: 8px; overflow: hidden;
+      border: 1px solid rgba(245,245,246,.2);
+      box-shadow: 0 34px 70px -18px rgba(0,0,0,.8);
+      transform: translateY(30px); opacity: 0;
+      transition: transform .9s .3s cubic-bezier(.16,1,.3,1), opacity .8s .3s;
+    }
+    .frame.on .inset { transform: translateY(0); opacity: 1; }
+    .inset img { display: block; width: 100%; }
+
+    /* mole frame */
+    #mole .frame-bg { background: radial-gradient(circle at 68% 45%, rgba(52,211,153,.2), transparent 55%), var(--ground); }
+    #mole .sprite {
+      position: absolute; right: 8vw; bottom: 24vh; z-index: 3;
+      width: min(26vw, 300px); image-rendering: pixelated;
+      filter: drop-shadow(0 22px 30px rgba(0,0,0,.6));
+    }
+    #mole .tile {
+      position: absolute; inset: 0; opacity: .06;
+      background: url('assets/empty hole.png'); background-size: 140px; image-rendering: pixelated;
+    }
+
+    /* flat sections */
+    .flat { position: relative; padding: 110px 30px; max-width: 1240px; margin: 0 auto; }
+    .flat h2 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 40px; }
+    .works-list { border-top: 1px solid rgba(245,245,246,.14); }
+    .work-row {
+      display: grid; grid-template-columns: minmax(160px, 300px) 1fr auto; gap: 20px; align-items: baseline;
+      padding: 24px 0; border-bottom: 1px solid rgba(245,245,246,.14);
+      transition: background .25s, transform .25s;
+    }
+    .work-row:hover { background: rgba(245,245,246,.04); transform: translateX(12px); }
+    .work-row h3 { font-family: 'Archivo Black'; font-size: 19px; text-transform: uppercase; letter-spacing: .02em; }
+    .work-row p { font-size: 14.5px; color: #a1a1aa; max-width: 64ch; }
+    .work-row .wtag { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #71717a; white-space: nowrap; }
+
+    .xp { display: grid; gap: 0; border-top: 1px solid rgba(245,245,246,.14); }
+    .xp-row { display: grid; grid-template-columns: 200px 1fr; gap: 22px; padding: 26px 0; border-bottom: 1px solid rgba(245,245,246,.14); }
+    .xp-when { font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #71717a; padding-top: 5px; }
+    .xp-what h3 { font-size: 19px; font-weight: 800; }
+    .xp-what .co { font-size: 14px; font-weight: 600; color: var(--violet); margin: 2px 0 8px; }
+    .xp-what p { font-size: 14.5px; color: #a1a1aa; max-width: 74ch; }
+    .xp-what ul { margin: 0; padding-left: 18px; color: #a1a1aa; font-size: 14.5px; display: grid; gap: 8px; max-width: 80ch; }
+
+    /* idle 3D models standing behind the experience timeline */
+    .xp-wrap { position: relative; }
+    .cast-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5; }
+    .cast-bg model-viewer { position: absolute; width: 340px; height: 30%; right: 0; --poster-color: transparent; }
+    .cast-bg model-viewer:nth-child(1) { top: 4%; }
+    .cast-bg model-viewer:nth-child(2) { top: 36%; }
+    .cast-bg model-viewer:nth-child(3) { top: 68%; }
+    .xp-wrap > *:not(.cast-bg) { position: relative; z-index: 1; }
+    @media (max-width: 1250px) { .cast-bg { display: none; } }
+
+    /* skills */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; background: rgba(245,245,246,.14); border: 1px solid rgba(245,245,246,.14); }
+    .skill-cat { background: #0a0a0d; padding: 24px; }
+    .skill-cat b { display: block; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--violet); margin-bottom: 14px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pills span { font-size: 13px; font-weight: 600; padding: 6px 12px; border: 1px solid rgba(245,245,246,.2); border-radius: 3px; color: #d4d4d8; }
+
+    /* contact */
+    #contact { align-items: center; text-align: center; }
+    #contact .frame-bg { background: radial-gradient(ellipse at 50% 80%, rgba(52,211,153,.16), transparent 60%), var(--ground); }
+    #contact .credit { display: grid; justify-items: center; }
+    #contact h2 { max-width: none; }
+    #contact .foot { position: absolute; bottom: 54px; left: 0; right: 0; z-index: 3; font-size: 12.5px; color: #71717a; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .rv, .inset { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .frame.on .frame-bg > img, .frame.on .frame-bg > video { animation: none; transform: scale(1.02); }
+      #hero .dot { animation: none; }
+    }
+    @media (max-width: 900px) {
+      .frame, #hero, #contact { padding: 96px 20px 96px; flex-direction: column; align-items: stretch; justify-content: flex-end; }
+      .credit-grid { grid-template-columns: 1fr !important; max-width: none !important; }
+      .inset { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 26px; transform: none; }
+      .frame.on .inset { transform: none; }
+      #hero .who { position: static; text-align: left; margin-bottom: 18px; order: -1; }
+      #mole .sprite { position: relative; right: auto; bottom: auto; margin-top: 24px; width: 46vw; align-self: flex-start; }
+      .work-row { grid-template-columns: 1fr; gap: 6px; }
+      .xp-row { grid-template-columns: 1fr; gap: 6px; }
+      .chrome-top { padding: 14px 20px; }
+      .timeline { padding: 12px 20px 14px; }
+    }
+    @media (max-width: 600px) {
+      .frame h1, .frame h2 { font-size: clamp(1.9rem, 10vw, 2.6rem); overflow-wrap: anywhere; max-width: none; }
+      .logline { font-size: 15px; }
+      .tl-label:first-child { display: none; } /* keep the counter, drop the frame name on tiny screens */
+    }
+
+    /* ── lightbox nav ── */
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(10,10,13,.72); border: 1px solid rgba(245,245,246,.28);
+      color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+    .lb-nav:hover { background: rgba(10,10,13,.95); border-color: var(--ink); }
+    .lb-nav.prev { left: 3vw; }
+    .lb-nav.next { right: 3vw; }
+    .lb-nav.prev:hover { transform: translateY(-50%) translateX(-3px); }
+    .lb-nav.next:hover { transform: translateY(-50%) translateX(3px); }
+    #lb-count {
+      position: absolute; bottom: 56px; left: 0; right: 0; text-align: center;
+      font-size: 12px; font-weight: 700; letter-spacing: .18em;
+      color: rgba(245,245,246,.62); font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 760px) {
+      .lb-nav { width: 42px; height: 42px; font-size: 17px; }
+      .lb-nav.prev { left: 8px; }
+      .lb-nav.next { right: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="chrome-top">
+    <a class="brand" href="./">Ibad Ullah</a>
+    <div style="display:flex; align-items:center; gap:14px">
+      <a class="cta" href="engineering.html">Engineering &rarr;</a>
+      <a class="cta" href="mailto:ibadullah.k81@gmail.com">Contact</a>
+    </div>
+  </header>
+
+  <!-- music mini-player -->
+  <div class="player" id="player">
+    <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="pmeta">
+      <b id="pTitle">Retro Arcade Lofi</b>
+      <span id="pArtist">Monda Music</span>
+    </div>
+    <button id="pPrev" class="pbtn" aria-label="Previous track">&#9198;</button>
+    <button id="pPlay" class="pbtn" aria-label="Play music">&#9654;</button>
+    <button id="pNext" class="pbtn" aria-label="Next track">&#9197;</button>
+    <button id="pMute" class="pbtn" aria-label="Mute music">&#128266;</button>
+    <input id="pVol" type="range" min="0" max="1" step="0.05" value="0.5" aria-label="Music volume">
+    <button id="pToggle" class="ptab" aria-label="Hide music player" aria-expanded="true">&#9650;</button>
+  </div>
+  <audio id="pA" preload="none"></audio>
+  <audio id="pB" preload="none"></audio>
+
+  <div class="timeline" aria-hidden="true">
+    <span class="tl-label" id="tl-name">Opening</span>
+    <div class="tl-track"><div class="tl-fill" id="tl-fill"></div></div>
+    <span class="tl-label" id="tl-count">01 / 10</span>
+  </div>
+
+  <main>
+
+    <!-- ═══ FRAME 0 — TITLE CARD ═══ -->
+    <section class="frame" id="hero" data-name="Opening">
+      <div class="frame-bg" data-video="assets/RedBread(MainMenu).mp4"><img src="assets/Hands of the end.png" alt=""></div>
+      <div class="who rv" style="transition-delay:.5s">
+        <span class="dot"></span><b>Open to opportunities</b><br>
+        Stockholm, Sweden<br>
+        Vice Lead Game Dev @ Gamucatex
+      </div>
+      <div class="credit">
+        <div class="kick rv">Now showing</div>
+        <h1 class="display rv">Software Engineer<br>&amp; Game Developer</h1>
+        <p class="logline rv"><strong>Ibad Ullah.</strong> Five-plus years shipping desktop, web and embedded systems, and the game worlds above. Unity/C#, C++, .NET, netcode, procedural generation.</p>
+        <div class="frame-meta rv">
+          <a class="btn" href="#hote">Roll the reel</a>
+          <a class="btn line" href="https://github.com/Ebad018" target="_blank" rel="noopener">GitHub</a>
+          <span class="role-tag">Scroll <em>▼</em></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRAME 1 — HANDS OF THE END ═══ -->
+    <section class="frame" id="hote" data-name="Hands of the End">
+      <div class="frame-bg"><img src="assets/Hands of the end (2).png" alt=""></div>
+      <div class="credit">
+        <div class="kick rv">Unity · Solo · In development</div>
+        <h2 class="display rv">Hands of the End</h2>
+        <p class="logline rv">A first-person magic-casting roguelike: you are the Mage guarding the last village of a dying world. <strong>Designed, coded and illustrated solo</strong>, fusing 2D pixel art with 3D worlds.</p>
+        <div class="credit-grid rv">
+          <div class="credit-cell"><b>Design Patterns</b><span>Facilitated rapid prototyping of game mechanics, resulting in highly modular behaviors, by implementing a Component-based design and Finite State Machines.</span></div>
+          <div class="credit-cell"><b>Architecture</b><span>Achieved polymorphic scaling across diverse enemy types, significantly reducing code duplication, by engineering IDamageable / AbilityBehavior interfaces that decouple AI logic from stat retention.</span></div>
+          <div class="credit-cell"><b>Systems</b><span>Delivered highly responsive enemy combat mechanics, demonstrated by perfectly synchronized attack animations, by coupling NavMeshAgent pathfinding to Animator controllers using precision Animation Events.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(0)">Enter the village</button>
+          <span class="role-tag">Unity · C# · Shader Graph · <em>Pixel Art</em></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ GYROSPORTS ═══ -->
+    <section class="frame" id="gyro" data-name="GyroSports">
+      <div class="frame-bg" data-video="assets/GyroSports(Strike).mp4"><img src="assets/GyroSports(Pins).png" alt=""></div>
+      <div class="credit">
+        <div class="kick rv">Unity · Android · Solo</div>
+        <h2 class="display rv">GyroSports</h2>
+        <p class="logline rv">An asymmetrical cross-platform multiplayer game: the PC runs the heavy 3D simulation while your Android phone becomes a <strong>wireless motion controller</strong>, Wii Sports style.</p>
+        <div class="credit-grid rv">
+          <div class="credit-cell"><b>Architecture</b><span>Engineered a decoupled, asymmetrical architecture where the PC client runs the physics simulation while Android devices function purely as lightweight wireless motion controllers.</span></div>
+          <div class="credit-cell"><b>Networking</b><span>Delivered highly responsive, low-latency gameplay, supporting both multi-device connections and single-device "pass and play" modes, by writing a custom, lightweight UDP networking protocol in C#.</span></div>
+          <div class="credit-cell"><b>Sensors</b><span>Translated physical motion into precise in-game actions by directly reading and interpolating Android Gyroscope and Accelerometer sensor data to calculate swing velocity, aim, and wrist-twist spin.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(4)">Watch the strike</button>
+          <span class="role-tag">Unity · C# · <em>UDP Sockets</em> · Android Sensors</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRED'S ESCAPE ═══ -->
+    <section class="frame" id="freds" data-name="Fred's Escape">
+      <div class="frame-bg" data-video="assets/Fred's Escape(Main View).mp4"></div>
+      <div class="credit">
+        <div class="kick rv">Unreal Engine · C++ · Group project</div>
+        <h2 class="display rv">Fred's Escape</h2>
+        <p class="logline rv">A 3D escape room in Unreal Engine: Fred is trapped in a toy store. I engineered the <strong>reusable puzzle logic and object-interaction framework</strong> the team built its levels on.</p>
+        <div class="credit-grid rv">
+          <div class="credit-cell"><b>Architecture</b><span>Maintained stable and extensible game logic across multiple levels by engineering a scalable Puzzle State Machine that handles dynamic dependencies using Object-Oriented C++ and Unreal's Delegate event system.</span></div>
+          <div class="credit-cell"><b>Systems</b><span>Enabled rapid puzzle creation for level designers by developing modular, drag-and-drop puzzle logic, specifically Keypad systems and Rotatable Object frameworks, exposed through generic C++ base classes.</span></div>
+          <div class="credit-cell"><b>Integration</b><span>Seamlessly connected player actions to puzzle states, ensuring reliable gameplay progression, by hooking into existing interaction frameworks to precisely detect 3D actor rotations and keypad digit inputs.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(5)">Watch the escape</button>
+          <span class="role-tag">Unreal · C++ · <em>State Machines</em></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRAME 2 — RED BREAD ═══ -->
+    <section class="frame" id="redbread" data-name="Red Bread Repossession">
+      <div class="frame-bg" data-video="assets/RedBread(MainMenu).mp4"><img src="assets/Red Bread Repo (2).png" alt=""></div>
+      <div class="credit">
+        <div class="kick rv">Unity Netcode · Solo</div>
+        <h2 class="display rv">Red Bread Repossession</h2>
+        <p class="logline rv">A multiplayer third-person shooter on an <strong>authoritative client-server architecture</strong>: Netcode for GameObjects, UGS matchmaking, Relay NAT punch-through.</p>
+        <div class="credit-grid rv">
+          <div class="credit-cell"><b>Architecture</b><span>Ensured fair and competitive multiplayer gameplay, effectively preventing common networking exploits and jitter, by engineering an Authoritative Server with Client-Side Prediction and a fixed 60Hz tick-based simulation engine.</span></div>
+          <div class="credit-cell"><b>Design Patterns</b><span>Achieved smooth visual rendering regardless of network latency, maintaining precise underlying gameplay logic, by building Modular State Machines for player actions and strictly decoupling them from visual interpolation.</span></div>
+          <div class="credit-cell"><b>Systems</b><span>Optimized network traffic and decoupled lobby UI architecture, minimizing bandwidth usage, by implementing lightweight struct-based network payloads and Scriptable Object Event Channels.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(1)">Watch the showdown</button>
+          <span class="role-tag">NGO · Relay · <em>Client Prediction</em></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRAME 3 — PHARAOH ═══ -->
+    <section class="frame" id="pharaoh" data-name="Project Pharaoh">
+      <div class="frame-bg"><img src="assets/Project Pharaoh 2.png" alt=""></div>
+      <div class="credit">
+        <div class="kick rv">Unity ECS / DOTS · Solo · In development</div>
+        <h2 class="display rv">Project Pharaoh</h2>
+        <p class="logline rv">Tower defense meets base building on <strong>Unity ECS (DOTS)</strong>: massive hordes, and when the base falls you extract, spend the salvage, and push deeper. A roguelite loop.</p>
+        <div class="credit-grid rv">
+          <div class="credit-cell"><b>Design Patterns</b><span>Supported large-scale enemy hordes without performance degradation, maintaining a consistent framerate, by rigorously applying Object Pooling, Command Patterns, and Observer abstractions.</span></div>
+          <div class="credit-cell"><b>Architecture</b><span>Accelerated level design iteration, enabling rapid testing of distinct environments, by leveraging Dependency Injection via ITerrainGenerator interfaces and developing complex custom Unity Editor tooling.</span></div>
+          <div class="credit-cell"><b>Systems</b><span>Generated infinite, diverse game worlds, creating unique tactical scenarios per playthrough, by engineering multi-pass procedural math algorithms mapping Perlin noise to dynamic biomes and river paths.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(2)">See the horde</button>
+          <span class="role-tag">ECS / DOTS · <em>Procedural Generation</em></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CULTIVATION FORTRESS SIM ═══ -->
+    <section class="frame" id="cfs" data-name="Cultivation Fortress Sim">
+      <div class="frame-bg"><img class="px" src="assets/CFS_Worldgen.png" alt=""></div>
+      <div class="credit">
+        <div class="kick rv">C++20 · Custom engine · Solo · In development</div>
+        <h2 class="display rv">Cultivation Fortress Sim</h2>
+        <p class="logline rv">A Dwarf Fortress-inspired cultivation colony sim in modern <strong>C++20 with no game engine</strong>. SFML draws the pixels; every simulation, generation and UI system is hand-built under SOLID discipline.</p>
+        <div class="credit-grid rv" style="grid-template-columns: repeat(2, minmax(0,1fr)); max-width: 1000px">
+          <div class="credit-cell"><b>Engine Architecture</b><span>Kept a 30k-line simulation maintainable and testable by decomposing it into a single authoritative World state driven by ~40 single-responsibility systems (CultivationSystem, PawnSystem, A* PathSystem, SiegeSystem) behind one SimEngine facade, keeping the SFML/ImGui front-end fully decoupled from a header-only, engine-agnostic core.</span></div>
+          <div class="credit-cell"><b>Procedural Generation</b><span>Generated an endlessly varied, believable world by chaining a multi-pass pipeline (Perlin/FBM elevation → river carving → spirit-vein seeding → adjacency-ruled biomes → irregular corruption fronts), then folding it into a two-layer surface + underground tile grid threaded with minable qi veins.</span></div>
+          <div class="credit-cell"><b>Emergent History Sim</b><span>Produced Dwarf-Fortress-style living lore by simulating a century of pre-history before play begins: 75+ historical figures who forge grudges, break through cultivation realms, and forge named artifacts across ~500 recorded events the player later inhabits.</span></div>
+          <div class="credit-cell"><b>Data-Driven Content</b><span>Turned design documents into the live game database by authoring all content (beasts, weapons, arts, resources, events) as human-readable data tables and writing a custom parser that ingests those tables directly into typed C++ objects at startup: one source of truth shared by writer and engine.</span></div>
+          <div class="credit-cell"><b>Tooling &amp; Workflow</b><span>Enabled fast, verifiable iteration on a headless-friendly build by engineering a CMake/VS2022 toolchain and a screenshot-based self-test harness that boots the game, drives scripted scenarios, and dumps annotated PNGs for automated visual regression checks.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(6)">See the world</button>
+          <span class="role-tag">C++20 · SFML / ImGui · <em>A* Pathfinding</em> · CMake</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRAME 4 — FERP ═══ -->
+    <section class="frame" id="ferp" data-name="FERP">
+      <div class="frame-bg"><img src="assets/FERP-inventory.png" alt="" style="filter: blur(6px) brightness(.7)"></div>
+      <div class="inset"><img src="assets/FERP-dashboard.png" alt="FERP station dashboard showing litres sold, cash taken and fuel variance"></div>
+      <div class="credit">
+        <div class="kick rv">React · Electron · Commissioned</div>
+        <h2 class="display rv">FERP</h2>
+        <p class="logline rv">An <strong>offline-first ERP SaaS</strong> for fuel stations in Pakistan, commissioned by a station owner and built end-to-end, from multi-tenant backend to desktop client.</p>
+        <div class="credit-grid rv" style="max-width:900px">
+          <div class="credit-cell"><b>Architecture</b><span>Delivered uninterrupted operational capability for fuel stations in low-connectivity regions, ensuring zero data loss during offline periods, by engineering an Offline-First Synchronization engine using Electron, Dexie.js, and a custom massive-payload reconciliation hook.</span></div>
+          <div class="credit-cell"><b>Backend Systems</b><span>Ensured absolute data privacy across independent companies, preventing cross-tenant data leakage, by architecting a strict Multi-Tenant PostgreSQL database structure interfaced via Prisma ORM.</span></div>
+          <div class="credit-cell"><b>Algorithms</b><span>Automated exact fuel volume calculations and double-entry accounting, eliminating manual errors and flagging potential theft, by developing precise tank calibration algorithms and shift balancing routines.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <button class="btn" onclick="openShots(3)">See it running</button>
+          <span class="role-tag">React &amp; TS · Electron · <em>PostgreSQL</em></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRAME 5 — WHACK-A-MOLE ═══ -->
+    <section class="frame" id="mole" data-name="Whack-A-Mole">
+      <div class="frame-bg"><div class="tile"></div></div>
+      <img class="sprite" id="mole-anim" src="assets/empty hole.png" alt="Whack-A-Mole sprite">
+      <div class="credit">
+        <div class="kick rv">Unity 2D · Solo · Playable now</div>
+        <h2 class="display rv">Whack-A-Mole</h2>
+        <p class="logline rv">A 2D arcade game treated like <strong>production software</strong>: event-driven architecture, coroutine state machines, difficulty that ramps by Lerp without spikes.</p>
+        <div class="credit-grid rv">
+          <div class="credit-cell"><b>Architecture</b><span>Established a highly maintainable codebase, preventing UI logic from tangling with core gameplay loops, by enforcing a clean separation using C# Actions and Events.</span></div>
+          <div class="credit-cell"><b>Mechanics</b><span>Created responsive and scalable game board mechanics, allowing for easy expansion of the grid, by building a dynamic Coroutine-based State Machine for Mole logic coupled with automated procedural generation.</span></div>
+          <div class="credit-cell"><b>Systems</b><span>Delivered a balanced player experience, seamlessly increasing challenge without abrupt spikes, by engineering dynamic difficulty scaling routines using mathematical Lerping over the game's duration.</span></div>
+        </div>
+        <div class="frame-meta rv">
+          <a class="btn" href="https://ebad018.itch.io/wackamole" target="_blank" rel="noopener">Play in browser</a>
+          <span class="role-tag">Unity · <em>Event-Driven</em> · State Machines</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ MORE + EXPERIENCE ═══ -->
+    <section class="flat" id="more">
+      <h2 class="display">Also on the shelf</h2>
+      <div class="works-list">
+        <div class="work-row">
+          <h3>SmolTheftAuto</h3>
+          <p>Team project — vehicle system: physics movement controller, entry/exit, modular seats, NPC persistence.</p>
+          <span class="wtag">Unity · Team</span>
+        </div>
+        <div class="work-row">
+          <h3>VampireSurvivalClone</h3>
+          <p>Geometric 2D survivors game drilled on design patterns: factories, pooling, observers.</p>
+          <span class="wtag">C++ · RayLib</span>
+        </div>
+      </div>
+
+      <div style="height:76px"></div>
+      <div class="xp-wrap">
+      <div class="cast-bg" aria-hidden="true">
+        <model-viewer class="px" src="assets/skeleton.glb" alt="" autoplay interaction-prompt="none" disable-zoom></model-viewer>
+        <model-viewer src="assets/RedBredRepo.glb" alt="" autoplay interaction-prompt="none" disable-zoom camera-orbit="180deg 78deg auto"></model-viewer>
+        <model-viewer src="assets/SM_Chr_ScifiWorlds_AlienArmor_01.glb" alt="" autoplay interaction-prompt="none" disable-zoom></model-viewer>
+      </div>
+      <h2 class="display">Experience</h2>
+      <div class="xp">
+        <div class="xp-row">
+          <div class="xp-when">Jun 2026 – Present</div>
+          <div class="xp-what">
+            <h3>Vice Lead Game Developer <span style="font-size:.72em;color:#71717a">(part-time)</span></h3>
+            <div class="co">Gamucatex · Denmark (Remote)</div>
+            <ul>
+              <li>Leading development on the Tectonicus Project, orchestrating a team of developers and mentoring interns.</li>
+              <li>Refactoring a legacy codebase heavily reliant on God Class Scripts into modular, maintainable architectures.</li>
+              <li>Managing the project via Trello, facilitating Sprint Reviews, maintaining comprehensive Documentation, and overseeing Pull Requests.</li>
+              <li>Designing and developing internal tooling to accelerate team workflows.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-when">Jan 2023 – Feb 2026</div>
+          <div class="xp-what">
+            <h3>Lead Software Engineer</h3>
+            <div class="co">Sabro Technologies · Islamabad, PK</div>
+            <ul>
+              <li>Successfully presented a strategic proposal to the BoD, advocating for Sabro's expansion into software-driven solutions.</li>
+              <li>Spearheaded architecture, planning, and deployment of in-house platforms (ERP, Quality Control, CRM) using C#, .NET, Firebase, and Dynamics 365.</li>
+              <li>Managed a cross-functional team of 10+ engineers (frontend, backend, embedded, QA); overseeing daily standups, Sprint Reviews, and conducting rigorous Code Reviews.</li>
+              <li>Developed Modbus RTU tools for real-time HVAC control, accompanied by Flutter mobile MQTT dashboards.</li>
+              <li>Authored technical documentation, B2B product demonstrations, and deployed Firebase-powered offline-first apps for factory personnel.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-when">Apr 2020 – Dec 2022</div>
+          <div class="xp-what">
+            <h3>Software Engineer → Senior Developer</h3>
+            <div class="co">Sabro Technologies · Islamabad, PK</div>
+            <ul>
+              <li>Reverse-engineered imported AC board protocols and collaborated with embedded engineers for ESP32 firmware-to-desktop bridging.</li>
+              <li>Digitized internal workflows, achieving an 80% reduction in manual log entries across QA and Inventory.</li>
+              <li>Engineered a modular internal ERP system via WinForms, .NET, and SQL Server.</li>
+              <li>Developed C# diagnostic software executing unit health checks spanning compressor RPM, relays, and PDF report generation.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-when">2019 – 2020</div>
+          <div class="xp-what">
+            <h3>Technical Support Engineer</h3>
+            <div class="co">MFL · Karachi (Remote)</div>
+            <ul>
+              <li>Provided remote technical support emphasizing Excel Macros automation and CRM data setups.</li>
+              <li>Facilitated company transitions to cloud-shared tools like SharePoint.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div style="height:76px"></div>
+      <h2 class="display">Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-cat">
+          <b>Languages</b>
+          <div class="pills"><span>C#</span><span>C++</span><span>Dart</span><span>TypeScript</span><span>VB.NET</span><span>SQL</span></div>
+        </div>
+        <div class="skill-cat">
+          <b>Frameworks &amp; Engines</b>
+          <div class="pills"><span>Unity</span><span>Unreal</span><span>Godot</span><span>.NET 6 / Core</span><span>Flutter</span><span>Entity Framework</span><span>Blazor / MVC</span><span>ReactJS</span></div>
+        </div>
+        <div class="skill-cat">
+          <b>Database &amp; Cloud</b>
+          <div class="pills"><span>Firebase / Firestore</span><span>SQL Server / MySQL</span><span>Google Cloud</span><span>Docker</span><span>Github Actions</span></div>
+        </div>
+        <div class="skill-cat">
+          <b>Embedded &amp; Protocols</b>
+          <div class="pills"><span>Modbus RTU</span><span>MQTT</span><span>ESP32 Integration</span><span>Serial RS-485</span><span>Bluetooth</span></div>
+        </div>
+        <div class="skill-cat">
+          <b>Version Control</b>
+          <div class="pills"><span>Git</span><span>GitHub</span><span>Ark VCS (Unreal)</span></div>
+        </div>
+        <div class="skill-cat">
+          <b>Engineering Practices</b>
+          <div class="pills"><span>SOLID Principles</span><span>Dependency Injection</span><span>Clean Code</span><span>Agile / Scrum</span><span>Trello</span><span>Test-Driven Dev (TDD)</span><span>CI/CD Pipelines</span><span>Architecture Design</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FRAME 6 — CONTACT ═══ -->
+    <section class="frame" id="contact" data-name="Contact">
+      <div class="frame-bg"></div>
+      <div class="credit">
+        <div class="kick rv" style="justify-content:center">End credits: your move</div>
+        <h2 class="display rv">Let's build<br>something</h2>
+        <p class="logline rv" style="margin:0 auto 26px">Open to software engineering and game development roles, and freelance work. If these systems look like your kind of problem, write to me.</p>
+        <div class="frame-meta rv" style="justify-content:center">
+          <a class="btn" href="mailto:ibadullah.k81@gmail.com">ibadullah.k81@gmail.com</a>
+          <a class="btn line" href="https://github.com/Ebad018" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn line" href="https://ebad018.itch.io" target="_blank" rel="noopener">Itch.io</a>
+        </div>
+      </div>
+      <div class="foot">© <span id="y"></span> Ibad Ullah · Stockholm, Sweden. Designed &amp; built from scratch.</div>
+    </section>
+
+  </main>
+
+  <!-- lightbox -->
+  <div id="lightbox" style="display:none; position:fixed; inset:0; z-index:99; background:rgba(3,3,4,.95); align-items:center; justify-content:center; padding:4vw" onclick="if(event.target===this) closeShots()">
+    <button onclick="closeShots()" aria-label="Close" style="position:absolute; top:20px; right:26px; background:none; border:none; color:#fff; font-size:34px; cursor:pointer">&times;</button>
+    <img id="lb-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="max-width:92%; max-height:82vh; border-radius:6px; display:none" alt="Project screenshot">
+    <video id="lb-vid" controls loop muted style="max-width:92%; max-height:82vh; border-radius:6px; display:none"></video>
+    <button class="lb-nav prev" onclick="stepShots(-1)" aria-label="Previous">&#10094;</button>
+    <button class="lb-nav next" onclick="stepShots(1)" aria-label="Next">&#10095;</button>
+    <div id="lb-count"></div>
+    <div id="lb-dots" style="position:absolute; bottom:28px; left:0; right:0; display:flex; gap:10px; justify-content:center"></div>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // frame reveal + timeline
+    const frames = [...document.querySelectorAll('.frame, .flat')];
+    const namedFrames = [...document.querySelectorAll('.frame')];
+    const tlFill = document.getElementById('tl-fill');
+    const tlName = document.getElementById('tl-name');
+    const tlCount = document.getElementById('tl-count');
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('on');
+          if (e.target.dataset.name) {
+            const idx = namedFrames.indexOf(e.target);
+            tlName.textContent = e.target.dataset.name;
+            tlCount.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(namedFrames.length).padStart(2, '0');
+          }
+        }
+      });
+    }, { threshold: 0.4 });
+    frames.forEach(f => obs.observe(f));
+
+    // timeline fill = document progress
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        tlFill.style.transform = 'scaleX(' + (max > 0 ? scrollY / max : 0) + ')';
+        ticking = false;
+      });
+    }, { passive: true });
+
+    // full-bleed background videos, mounted + playing only while their frame is visible
+    const vObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        const host = e.target.querySelector('.frame-bg[data-video]');
+        if (!host) return;
+        let v = host.querySelector('video');
+        if (e.isIntersecting) {
+          if (!v) {
+            v = document.createElement('video');
+            v.src = host.dataset.video;
+            v.muted = true; v.loop = true; v.playsInline = true;
+            host.prepend(v);
+          }
+          v.play().catch(() => {});
+        } else if (v) v.pause();
+      });
+    }, { threshold: 0.25 });
+    document.querySelectorAll('.frame').forEach(f => vObs.observe(f));
+
+    // the opening frame's video starts immediately, no observer needed
+    (() => {
+      const host = document.querySelector('#hero .frame-bg[data-video]');
+      if (host && !host.querySelector('video')) {
+        const v = document.createElement('video');
+        v.src = host.dataset.video;
+        v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true;
+        host.prepend(v);
+        v.play().catch(() => {});
+      }
+    })();
+
+    // ── music mini-player: playlist, true crossfade between two audio elements ──
+    const playlist = [
+      { src: 'assets/mondamusic-retro-arcade-game-music-491667.mp3', title: 'Retro Arcade Lofi', artist: 'Monda Music' },
+      { src: 'assets/mondamusic-retro-arcade-game-music-512837.mp3', title: 'Retro Arcade', artist: 'Monda Music' },
+      { src: 'assets/mfcc-retro-arcade-game-music-297305.mp3', title: 'Arcade Runner', artist: 'MFCC' }
+    ];
+    const XFADE = 4; // seconds the outgoing and incoming tracks overlap
+
+    const pPlayer = document.getElementById('player');
+    const pPlay = document.getElementById('pPlay');
+    const pPrev = document.getElementById('pPrev');
+    const pNext = document.getElementById('pNext');
+    const pMute = document.getElementById('pMute');
+    const pVol = document.getElementById('pVol');
+    const pTitle = document.getElementById('pTitle');
+    const pArtist = document.getElementById('pArtist');
+
+    let deck = [document.getElementById('pA'), document.getElementById('pB')];
+    let live = 0;                 // which deck is the audible one
+    let trackIdx = 0;
+    let userVol = 0.5;
+    let started = false;          // has the visitor pressed play at least once
+    const cur = () => deck[live];
+    const idle = () => deck[1 - live];
+
+    // volume ramp that can run on both decks at once, so the two overlap
+    function ramp(el, target, seconds, done) {
+      clearInterval(el._fade);
+      const stepMs = 50, steps = Math.max(1, (seconds * 1000) / stepMs);
+      const delta = (target - el.volume) / steps;
+      el._fade = setInterval(() => {
+        const next = el.volume + delta;
+        if ((delta >= 0 && next >= target) || (delta < 0 && next <= target)) {
+          el.volume = target;
+          clearInterval(el._fade);
+          if (done) done();
+        } else {
+          el.volume = Math.min(1, Math.max(0, next));
+        }
+      }, stepMs);
+    }
+
+    function showMeta(i) {
+      pTitle.textContent = playlist[i].title;
+      pArtist.textContent = playlist[i].artist;
+    }
+
+    // bring in track i on the idle deck while the live one fades out — they overlap, never a silent gap
+    function crossfadeTo(i) {
+      trackIdx = (i + playlist.length) % playlist.length;   // wraps both ways: full loop
+      const outgoing = cur(), incoming = idle();
+
+      incoming.src = playlist[trackIdx].src;
+      incoming.currentTime = 0;
+      incoming.volume = 0;
+      incoming.muted = outgoing.muted;
+      incoming.play().catch(() => {});
+      ramp(incoming, userVol, XFADE);
+
+      ramp(outgoing, 0, XFADE, () => { outgoing.pause(); outgoing.currentTime = 0; });
+
+      live = 1 - live;
+      showMeta(trackIdx);
+      setPlayingUI(true);
+    }
+
+    function setPlayingUI(on) {
+      pPlayer.classList.toggle('playing', on);
+      pPlay.innerHTML = on ? '&#10074;&#10074;' : '&#9654;';
+      pPlay.setAttribute('aria-label', on ? 'Pause music' : 'Play music');
+    }
+
+    pPlay.onclick = () => {
+      const el = cur();
+      if (el.paused) {
+        if (!el.src) { el.src = playlist[trackIdx].src; }
+        el.volume = 0;
+        el.play().catch(() => {});
+        ramp(el, userVol, started ? 1 : XFADE / 2);
+        started = true;
+        setPlayingUI(true);
+      } else {
+        deck.forEach(d => { clearInterval(d._fade); d.pause(); });
+        setPlayingUI(false);
+      }
+    };
+
+    pNext.onclick = () => crossfadeTo(trackIdx + 1);
+    pPrev.onclick = () => crossfadeTo(trackIdx - 1);
+
+    // start the next track early so the tail of this one overlaps its head
+    deck.forEach(el => {
+      el.addEventListener('timeupdate', () => {
+        if (el !== cur() || el.paused || !el.duration) return;
+        if (el.duration - el.currentTime <= XFADE) crossfadeTo(trackIdx + 1);
+      });
+      // safety net if timeupdate misses the window on a short buffer
+      el.addEventListener('ended', () => { if (el === cur()) crossfadeTo(trackIdx + 1); });
+    });
+
+    pMute.onclick = () => {
+      const m = !cur().muted;
+      deck.forEach(d => d.muted = m);
+      pMute.innerHTML = m ? '&#128263;' : '&#128266;';
+      pMute.setAttribute('aria-label', m ? 'Unmute music' : 'Mute music');
+    };
+    pVol.oninput = () => {
+      userVol = +pVol.value;
+      clearInterval(cur()._fade);
+      cur().volume = userVol;
+      if (cur().muted && userVol > 0) {
+        deck.forEach(d => d.muted = false);
+        pMute.innerHTML = '&#128266;';
+      }
+    };
+
+    showMeta(0);
+
+    // collapse / expand the docked player
+    const pToggle = document.getElementById('pToggle');
+    function setCollapsed(collapsed) {
+      pPlayer.classList.toggle('collapsed', collapsed);
+      pToggle.innerHTML = collapsed ? '&#9660;' : '&#9650;';
+      pToggle.setAttribute('aria-label', collapsed ? 'Show music player' : 'Hide music player');
+      pToggle.setAttribute('aria-expanded', String(!collapsed));
+    }
+    pToggle.onclick = () => setCollapsed(!pPlayer.classList.contains('collapsed'));
+
+    // on small screens the card would cover the nav, so it starts tucked up with only the arrow tab showing
+    if (matchMedia('(max-width: 760px)').matches) setCollapsed(true);
+
+    // mole sprite
+    const moleFrames = ['assets/empty hole.png','assets/Miss.png','assets/Hitable.png','assets/Miss.png','assets/empty hole.png'];
+    let mf = 0;
+    const mole = document.getElementById('mole-anim');
+    if (mole && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(() => { mf = (mf + 1) % moleFrames.length; mole.src = moleFrames[mf]; }, 500);
+    }
+
+    // lightbox
+    const galleries = [
+      ['assets/Hands of the end.png','assets/Hands of the end (2).png','assets/Hands of the End (3).png','assets/Hands of the end (4).png'],
+      ['assets/RedBreadMenu.mp4','assets/Red Bread Repo (2).png','assets/Red Bread Repo (3).png'],
+      ['assets/Project Pharaoh.png','assets/Project Pharaoh 2.png'],
+      ['assets/FERP-dashboard.png','assets/FERP-variance.png','assets/FERP-inventory.png','assets/FERP-accounting.png','assets/FERP-trial-balance.png','assets/FERP-analytics.png'],
+      ['assets/GyroSports(Strike).mp4','assets/GyroSports(Swing).mp4','assets/GyroSports(ball).png','assets/GyroSports(Pins).png'],
+      ["assets/Fred's Escape(Main View).mp4","assets/Fred's Escape(Rotation Puzzle).mp4","assets/Fred's Escape(Keypad puzzle).mp4"],
+      ['assets/CFS_Worldgen.png','assets/CFS_WorldMap.png','assets/CFS_Fortress.png','assets/CFS_Underground.png','assets/CFS_BookUI.png']
+    ];
+    let curGal = 0, curIdx = 0;
+    const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img'), lbVid = document.getElementById('lb-vid'), lbDots = document.getElementById('lb-dots');
+    const lbCount = document.getElementById('lb-count'), lbPrev = document.querySelector('.lb-nav.prev'), lbNext = document.querySelector('.lb-nav.next');
+    const stepShots = d => showMedia((curIdx + d + galleries[curGal].length) % galleries[curGal].length);
+    function showMedia(i) {
+      curIdx = i;
+      const src = galleries[curGal][i];
+      const isVid = src.endsWith('.mp4');
+      lbImg.style.display = isVid ? 'none' : 'block';
+      lbVid.style.display = isVid ? 'block' : 'none';
+      if (isVid) { lbVid.src = src; lbVid.play().catch(()=>{}); } else { lbVid.pause(); lbImg.src = src; }
+      [...lbDots.children].forEach((d, j) => d.style.background = j === i ? '#fff' : 'rgba(255,255,255,.3)');
+      lbCount.textContent = (i + 1) + ' / ' + galleries[curGal].length;
+    }
+    function openShots(g) {
+      curGal = g;
+      lbDots.innerHTML = '';
+      galleries[g].forEach((_, i) => {
+        const d = document.createElement('button');
+        d.style.cssText = 'width:11px;height:11px;border-radius:50%;border:none;cursor:pointer;background:rgba(255,255,255,.3)';
+        d.onclick = () => showMedia(i);
+        lbDots.appendChild(d);
+      });
+      const multi = galleries[g].length > 1;
+      lbPrev.style.display = lbNext.style.display = multi ? 'flex' : 'none';
+      lbCount.style.display = multi ? 'block' : 'none';
+      showMedia(0);
+      lb.style.display = 'flex';
+    }
+    function closeShots() { lb.style.display = 'none'; lbVid.pause(); }
+    document.addEventListener('keydown', e => {
+      if (lb.style.display !== 'flex') return;
+      if (e.key === 'Escape') closeShots();
+      if (e.key === 'ArrowRight') showMedia((curIdx + 1) % galleries[curGal].length);
+      if (e.key === 'ArrowLeft') showMedia((curIdx - 1 + galleries[curGal].length) % galleries[curGal].length);
+    });
+    lbImg.onclick = () => showMedia((curIdx + 1) % galleries[curGal].length);
+  </script>
+</body>
+</html>
